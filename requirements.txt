@@ -1,0 +1,16 @@
+# python == 3.10.11
+
+# Core
+django==4.2.9
+python-dotenv==1.0.1
+str2bool==1.1
+
+# UI
+django-theme-soft-design==1.0.10
+
+# Deployment
+whitenoise==6.6.0
+gunicorn==21.2.0
+
+psycopg2==2.9.9
+# mysqlclient
