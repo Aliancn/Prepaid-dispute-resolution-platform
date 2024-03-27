@@ -17,3 +17,7 @@ node_modules
 Prepaid-dispute-resolution-platform.code-workspace
 
 CHANGELOG.md
+
+venv/
+
+.env

@@ -43,7 +43,7 @@
                     </div>
                     <a href="{% url 'smart-analysis' %}" class="dropdown-item border-radius-md"><span class="ps-3">智能分析</span></a>
                     <a href="{% url 'successful-cases' %}" class="dropdown-item border-radius-md"><span class="ps-3">成功案例</span></a>
-                    <a href="{% url 'dispute-list' %}" class="dropdown-item border-radius-md"><span class="ps-3">纠纷列表</span></a>
+                    <a href="{% url 'dispute-list' %}" class="dropdown-item border-radius-md"><span class="ps-3">取证固证</span></a>
                     <a href="{% url 'last-news' %}" class="dropdown-item border-radius-md"><span class="ps-3">最新资讯</span></a>
                     <div class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center px-0 mt-3">
                       <div class="d-inline-block">
@@ -65,6 +65,7 @@
                       </div>Account
                     </div>
                     {% if request.user.is_authenticated %}
+                      <a href="{% url 'my-provements' %}" class="dropdown-item border-radius-md"><span class="ps-3">我的证据</span></a>
                       <a href="{% url 'password_change' %}" class="dropdown-item border-radius-md"><span class="ps-3">Change Password</span></a>
                       <a href="{% url 'logout' %}" class="dropdown-item border-radius-md"><span class="ps-3">Logout</span></a>
                     {% else %}
