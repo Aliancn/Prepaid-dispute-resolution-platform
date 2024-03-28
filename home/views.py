@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-from home.models import Image, Provements, UserInfo, Post, Documents, Image, File
+from home.models import Image, Provements, UserInfo, Post, Documents, Image, File, User
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from home.models import Image, Provements, User, Post, Documents
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
@@ -16,13 +15,15 @@ def index(request):
     # Page from the theme 
     return render(request, 'pages/index.html')
 
-
+# 主页面
 
 def home(request):
     context = {
         'segment': 'home',
     }
     return render(request, 'pages/home.html', context)
+
+# 解决方案生成
 
 def smartAnalysis(request):
     context = {
@@ -42,11 +43,6 @@ def lastNews(request):
     }
     return render(request, 'pages/last-news.html', context)
 
-def successfulCases(request):
-    context = {
-        'segment': 'successful-cases',
-    }
-    return render(request, 'pages/successful-cases.html', context)
 
 def myProvements(request):
     context = {
@@ -87,9 +83,73 @@ def lastNews(request):
     }
     return render(request, 'pages/last-news.html', context)
 
-def successfulCases(request):
+# 社区发表文章
+
+
+def postCase(request):
+    context = {
+        'segment': 'post',
+    }
+    return render(request, 'pages/post.html', context)
+
+
+# 社区展示
+def successfulCases(request, page_id=1):
+
     context = {
         'segment': 'successful-cases',
+        'page_id' : page_id, # 1: 最热 2: 最新 3: 点赞
+        'discussion': [
+            {
+                'cover': '/static/images/case-test.jpeg',
+                'title': '关于某某案件的讨论',
+                'content': 'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                'avatar': '/static/images/avatar/avt.jpg',
+                'username': '某某律师',
+                'date': '2021-07-01',
+            },
+            {
+                'cover': '/static/images/case-test.jpeg',
+                'title': '关于某某案件的讨论',
+                'content': 'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                'avatar': '/static/images/avatar/avt.jpg',
+                'username': '某某律师',
+                'date': '2021-07-01',
+            },
+            {
+                'cover': '/static/images/case-test.jpeg',
+                'title': '关于某某案件的讨论',
+                'content': 'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                'avatar': '/static/images/avatar/avt.jpg',
+                'username': '某某律师',
+                'date': '2021-07-01',
+            },
+            {
+                'cover': '/static/images/case-test.jpeg',
+                'title': '关于某某案件的讨论',
+                'content': 'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                'avatar': '/static/images/avatar/avt.jpg',
+                'username': '某某律师',
+                'date': '2021-07-01',
+            },
+            {
+                'cover': '/static/images/case-test.jpeg',
+                'title': '关于某某案件的讨论',
+                'content': 'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                'avatar': '/static/images/avatar/avt.jpg',
+                'username': '某某律师',
+                'date': '2021-07-01',
+            },
+            {
+                'cover': '/static/images/case-test.jpeg',
+                'title': '关于某某案件的讨论',
+                'content': 'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                'avatar': '/static/images/avatar/avt.jpg',
+                'username': '某某律师',
+                'date': '2021-07-01',
+            }
+        ],
+
     }
     return render(request, 'pages/successful-cases.html', context)
 
