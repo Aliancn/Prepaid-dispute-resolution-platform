@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-from home.models import Image, Provements, User, Post, Documents
+from home.models import Image, Provements, UserInfo, Post, Documents, Image, File
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from home.models import Image, Provements, User, Post, Documents
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Create your views here.
 
@@ -145,17 +146,26 @@ def myProvements(request):
 def provements_upload(request):
     if request.method == 'POST':
         print('证据上传')
-        # 获取当前登录用户
         current_user = User.objects.get(username=request.user.username)
         title = request.POST.get('title')
         content = request.POST.get('content')
         img_provements = request.FILES.getlist('img_provements')
+<<<<<<< Updated upstream
 
         # 如果有图片上传，则处理图片
+=======
+        file_provements = request.FILES.getlist('file_provements')
+        file_info = request.POST.getlist('file_info')
+        img_info = request.POST.getlist('img_info')
+
+>>>>>>> Stashed changes
         img_ids = []
         if img_provements:
-            for img in img_provements:
+            for i, img in enumerate(img_provements):
+                # 获取对应的 img_info
+                current_img_info = img_info[i] if i < len(img_info) else ''
                 # 假设 Image 是你的图片模型
+<<<<<<< Updated upstream
                 image_id = Image.objects.create(image=img, intro=title).id
                 img_ids.append(image_id)
 
@@ -174,8 +184,37 @@ def provements_upload(request):
 
         # 重定向到某个页面或者返回一个成功的消息
         return redirect('dispute-list')
+=======
+                image = Image.objects.create(image=img, intro=current_img_info)
+                img_ids.append(image.id)
 
-    # 如果不是 POST 请求，则返回一个空表单页面或其他适当的响应
+        file_ids = []
+        if file_provements:
+            for i, file in enumerate(file_provements):
+                current_file_info = file_info[i] if i < len(file_info) else ''
+                file_instance = File.objects.create(file=file, intro=current_file_info)
+                file_ids.append(file_instance.id)
+            
+        pro = Provements.objects.create(user=current_user, title=title, content=content)
+        if img_ids:
+            pro.img_provements.add(*img_ids) 
+        if file_ids:
+            pro.file_provements.add(*file_ids) 
+        
+        pro.save()
+        
+        additional_info = request.POST.get('additional_info')
+        # TODO: Process additional_info as needed
+        
+        userinfo = UserInfo.objects.filter(user=current_user).first()
+        if not userinfo:
+            userinfo = UserInfo.objects.create(user=current_user)
+        userinfo.my_provements.add(pro)
+        
+        messages.success(request, '证据上传成功')
+        return redirect('my-provements')
+>>>>>>> Stashed changes
+
     return render(request, 'home.html')
 
 
