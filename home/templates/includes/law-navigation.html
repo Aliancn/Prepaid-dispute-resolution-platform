@@ -5,7 +5,7 @@
     <div class="col-12">
       <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
         <div class="container-fluid px-0">
-          <a class="navbar-brand font-weight-bolder ms-sm-3" href="/home" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom">平台名字</a>
+          <a class="navbar-brand font-weight-bolder ms-sm-3" href="/home" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom">权易保</a>
           <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon mt-2">
               <span class="navbar-toggler-bar bar1"></span>
@@ -41,10 +41,10 @@
                         </div>
                       </div>业务选择
                     </div>
-                    <a href="{% url 'smart-analysis' %}" class="dropdown-item border-radius-md"><span class="ps-3">智能分析</span></a>
-                    <a href="{% url 'successful-cases' %}" class="dropdown-item border-radius-md"><span class="ps-3">成功案例</span></a>
+                    <a href="{% url 'successful-cases' 1 %}" class="dropdown-item border-radius-md"><span class="ps-3">维权社区</span></a>
                     <a href="{% url 'dispute-list' %}" class="dropdown-item border-radius-md"><span class="ps-3">取证固证</span></a>
-                    <a href="{% url 'last-news' %}" class="dropdown-item border-radius-md"><span class="ps-3">最新资讯</span></a>
+                    <a href="{% url 'smart-analysis' %}" class="dropdown-item border-radius-md"><span class="ps-3">智能分析</span></a>
+                    <a href="{% url 'last-news' %}" class="dropdown-item border-radius-md"><span class="ps-3">案例资料</span></a>
                     <div class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center px-0 mt-3">
                       <div class="d-inline-block">
                         <div class="icon icon-shape icon-xs border-radius-md bg-gradient-primary text-center me-2 d-flex align-items-center justify-content-center ps-0">
