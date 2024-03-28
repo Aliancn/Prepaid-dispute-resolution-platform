@@ -41,6 +41,7 @@ class Post (models.Model):
     content = models.TextField()
     cover = models.ImageField(upload_to='static/images/covers/', null=True, blank=True)
     post_time = models.DateTimeField(auto_now_add=True)
+    like = models.IntegerField(default=0)
     
     def __str__(self):
         return self.user.user_name
