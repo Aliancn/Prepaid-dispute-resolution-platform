@@ -1,0 +1,103 @@
+{% extends 'layouts/law-base-sections.html' %}
+{% load static %}
+
+{% block title %}
+  post 展示页面
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}
+
+{% block content %}
+  <section style="margin-top: 100px;">
+    <div class="container">
+      <div class="row py-4">
+        {% comment %}left{% endcomment %}
+        <div class="col-lg-2">
+          <img src="{{ cover }}" alt="Image" class="img-fluid rounded" />
+        </div>
+        {% comment %}mid{% endcomment %}
+        <div class="col-lg-6" style="padding-left: 20px;">
+          {% comment %}content{% endcomment %}
+          <div class="row">
+            <h2 class="display-4 text-dark">{{ title }}</h2>
+            <div class="d-flex align-items-center">
+              <i class="ni ni-favourite-28 me-2" aria-hidden="true"></i>
+              <span id="like">{{ like }}</span>
+            </div>
+            
+            <div class="author align-items-center d-flex justify-content-end" style="margin-top: 10px;">
+              <img src="{{ user_avatar }}" alt="..." class="avatar shadow" />
+              <div class="name ps-3">
+                <span>{{ user_name }}</span>
+                <div class="stats">
+                  <small>Posted on {{ post_time }}</small>
+                </div>
+              </div>
+            </div>
+            <h5 class="text-dark text-gradient" style="margin-top: 30px;">{{ content }}</h5>
+            <a href="javascript:like();" class="d-flex justify-content-end align-items-end">
+              <button type="button" class="btn sm-gradient-white w-auto">
+                <div class="d-flex align-items-center">
+                  <i class="ni ni-favourite-28 me-2" aria-hidden="true"></i>
+                  LIKE
+                </div>
+              </button>
+            </a>
+          </div>
+          {% comment %}button{% endcomment %}
+          <div class="row py-4">
+            <div class="col-4">
+              {% if post_id > 0 %}
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'post-details' post_id|add:'-1' %}'">上一个</button>
+              {% endif %}
+            </div>
+            <div class="col"></div>
+            <div class="col-4">
+              <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'post-details' post_id|add:'1' %}'">下一个</button>
+            </div>
+          </div>
+        </div>
+
+        {% comment %}right{% endcomment %}
+        <div class="col-1"></div>
+        <div class="col-3">
+          {% comment %}list{% endcomment %}
+          <div class="row">
+            <ul class="list-group position-relative end-0">
+              <a href="#" class="list-group-item list-group-item-action active">主题</a>
+              <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+              <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
+              <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+              <a href="#" class="list-group-item list-group-item-action">Vestibulum at eros</a>
+            </ul>
+          </div>
+          {% comment %}button{% endcomment %}
+          <div class="row" style="margin-top: 30px;">
+            <div class="d-flex justify-content-center">
+              <a href="{% url 'post-case' %}" class="btn btn-primary btn-lg">发表讨论</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block javascripts %}
+  <script>
+    function like() {
+      axios
+        .get("{% url 'like' post_id %}")
+        .then(function (response) {
+          console.log(response)
+          var likeElement = document.getElementById('like')
+          likeElement.innerHTML = parseInt(likeElement.innerHTML) + 1
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
+  </script>
+{% endblock %}
