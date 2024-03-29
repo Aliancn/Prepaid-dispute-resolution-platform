@@ -19,7 +19,8 @@ urlpatterns = [
     path('like/<int:post_id>/', views.like, name='like'),
     path('my-provements/', views.myProvements, name='my-provements'),
     path('provements_upload/', views.provements_upload, name='provements_upload'),
-    path('test/', views.test, name='test'),
+    path('post_upload/', views.post_upload, name='post_upload'),
+    path('test/', views.test, name='test'), 
 ]
 
 if settings.DEBUG:

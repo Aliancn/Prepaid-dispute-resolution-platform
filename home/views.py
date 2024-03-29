@@ -92,7 +92,7 @@ def lastNews(request):
     }
     return render(request, 'pages/last-news.html', context)
 
-# 社区发表文章
+# 社区发表页面
 
 
 def postCase(request):
@@ -100,6 +100,35 @@ def postCase(request):
         'segment': 'post',
     }
     return render(request, 'pages/post.html', context)
+
+# 社区发表提交
+
+
+def post_upload(request):
+    if request.method == 'POST':
+        print('发表帖子')
+        current_user = User.objects.get(username=request.user.username)
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        cover = request.FILES.get('cover')  # 获取上传的文件
+
+        post = Post.objects.create(
+            user=current_user, title=title, content=content)
+        if cover:  
+            post.cover = cover
+        post.save()
+
+        userinfo = UserInfo.objects.filter(user=current_user).first()
+        if not userinfo:
+            userinfo = UserInfo.objects.create(user=current_user)
+        userinfo.my_posts.add(post)
+
+        messages.success(request, '帖子发表成功')
+        return redirect('/home')
+        #重定向逻辑未写
+
+    return render(request, 'home.html')
+
 
 # post like
 

@@ -1,0 +1,62 @@
+{% extends 'layouts/law-base-sections.html' %}
+{% load static %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}
+
+{% block content %}
+    <section style="margin-top: 100px;">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
+                    <h3 class="text-center">发表讨论</h3>
+                    <form role="form" id="contact-form" method="post" autocomplete="off" action="/post_upload/" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>标题</label>
+                                    <div class="input-group mb-4">
+                                        <input class="form-control" name="title" placeholder="" aria-label="First Name..." type="text">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label>内容</label>
+                                <textarea name="content" class="form-control" id="content" rows="4"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <label>上传封面</label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" name="cover">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-check form-switch mb-4">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked="">
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">我同意<a href="javascript:;" class="text-dark"><u>维权社区规定</u></a>.</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn bg-gradient-dark w-100">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
