@@ -8,7 +8,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('home/', views.home, name='home'),
-    path('smart-analysis/', views.smartAnalysis, name='smart-analysis'),
+    path('smart-analysis/', views.smartAnalysis.as_view(), name='smart-analysis'),
     path('dispute-cases/', views.disputeCases, name='dispute-list'),
     path('last-news/', views.lastNews, name='last-news'),
     path('successful-cases/<int:page_id>/',
@@ -25,4 +25,5 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

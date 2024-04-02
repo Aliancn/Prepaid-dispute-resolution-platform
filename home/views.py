@@ -1,13 +1,17 @@
+import datetime
 import logging
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.views import View
 
-from home.models import Image, Provements, UserInfo, Post, Documents, Image, File, User
+from home.models import ChatMessage, Image, Provements, UserInfo, Post, Documents, Image, File, User
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
+from utils.qianfanmodle import qianfan_Yi_34B_Chat
 
 # Create your views here.
 
@@ -114,7 +118,7 @@ def post_upload(request):
 
         post = Post.objects.create(
             user=current_user, title=title, content=content)
-        if cover:  
+        if cover:
             post.cover = cover
         post.save()
 
@@ -125,7 +129,7 @@ def post_upload(request):
 
         messages.success(request, '帖子发表成功')
         return redirect('/home')
-        #重定向逻辑未写
+        # 重定向逻辑未写
 
     return render(request, 'home.html')
 
@@ -298,6 +302,71 @@ def provements_upload(request):
         return redirect('my-provements')
 
     return render(request, 'home.html')
+
+
+# ai 智能分析
+class smartAnalysis(View):
+    def getHistory(self):
+        history = []
+        if self.request.user.is_authenticated:
+            history = ChatMessage.objects.filter(
+                user=self.request.user).order_by('created_at')
+        return history
+
+    def get(self, request):
+        # history = self.getHistory()
+        topic = request.GET.get('topic')
+        # history.filter(topic=topic)
+        # topic_history = [item for item in history.filter(topic=topic).values()]
+        topic_history = [
+            {
+                'user': 'user',
+                'topic': 'topic',
+                'message': 'message',
+                'response': 'response',
+                'created_at': 'time',
+            },
+            {
+                'user': 'user2',
+                'topic': 'topic2',
+                'message': 'message2',
+                'response': 'response2',
+                'created_at': 'time2',
+            },
+            {
+                'user': 'user3',
+                'topic': 'topic3',
+                'message': 'message3',
+                'response': 'response3',
+                'created_at': 'time3',
+            },
+            {
+                'user': 'user4',
+                'topic': 'topic4',
+                'message': 'message4',
+                'response': 'response4',
+                'created_at': 'time4',
+            },
+        ]
+        context = {
+            'segment': 'smart-analysis',
+            'history': topic_history,
+        }
+        return render(request, 'pages/smart-analysis.html', context)
+
+    def post(self, request):
+        message = request.POST.get("message")
+        history = self.getHistory()
+        # if self.request.user.is_authenticated:
+        #     response = ask_with_chat_completion(history, message)
+        #     chat_message = ChatMessage(user=request.user, message=message, response=response,
+        #                                created_at=datetime.datetime.now())
+        #     chat_message.save()
+        # else:
+        # response = ask_with_completion(message)
+        response = qianfan_Yi_34B_Chat(message)
+        response = response.body['result']
+        return JsonResponse({"message": message, "response": response})
 
 
 def test(request):

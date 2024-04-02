@@ -1,6 +1,10 @@
 {% extends 'layouts/law-base-sections.html' %}
 {% load static %}
 
+{% block style %}
+  <link rel="stylesheet" href="{% static 'css/smart-analysis.css' %}" />
+{% endblock %}
+
 {% block title %}
 
 {% endblock %}
@@ -10,9 +14,118 @@
 {% endblock %}
 
 {% block content %}
-
+  <section style="margin-top: 100px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action active">Topic</a>
+            <a href="#" class="list-group-item list-group-item-action">topic 1</a>
+            <a href="#" class="list-group-item list-group-item-action">topic 2</a>
+            <a href="#" class="list-group-item list-group-item-action">topic 3</a>
+            <a href="#" class="list-group-item list-group-item-action">topic 4</a>
+          </div>
+        </div>
+        <div class="col-md-10">
+          {% comment %}聊天框{% endcomment %}
+          <div class="card flex-grow-1">
+            <div class="card-header bg-primary text-white">
+              <div class="row">
+                <div class="col-md-6 text-left">维权智能助手</div>
+                <div class="col-md-6 text-end">
+                  <b>欢迎, {{ user.username }}</b>
+                  <a style="color: yellow;" href="#">new</a>
+                </div>
+              </div>
+            </div>
+            <div class="card-body messages-box">
+              <div class="list-group" id="messages-list">
+                {% for msg in history %}
+                  <a href="#" class="message sent list-group-item list-group-item-action item-left">
+                    <div class="message-text">
+                      <div class="message-sender">
+                        <b>你：</b>
+                      </div>
+                      <div class="message-content">{{ msg.message }}</div>
+                    </div>
+                  </a>
+                  <a href="#" class="message received list-group-item list-group-item-action item-left">
+                    <div class="message-text">
+                      <div class="message-sender">
+                        <b>智能助手：</b>
+                      </div>
+                      <div class="message-content">{{ msg.response }}</div>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          {% comment %}发送{% endcomment %}
+          <form class="message-form" id="message-form">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="请输入你想问的问题..." id="form-input" />
+              <button class="btn btn-primary mb-0" type="submit">发送</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
 {% block javascripts %}
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+  <script>
+    const messagesList = $('#messages-list')
+    const messageForm = $('#message-form')
+    const messageInput = $('#form-input')
+    
+    messageForm.on('submit', function (event) {
+      event.preventDefault()
+      console.log('submit')
+      const message = messageInput.val().trim()
+      if (message.length === 0) {
+        return
+      }
+      const messageItem = $('<a></a>').addClass('message sent list-group-item list-group-item-action item-left').html(`
+                                                                  <div class="message-text">
+                                                                    <div class="message-sender">
+                                                                      <b>你：</b>
+                                                                    </div>
+                                                                    <div class="message-content">${message}</div>
+                                                                  </div>`)
+      messagesList.append(messageItem)
+      messagesList.scrollTop(messagesList.prop('scrollHeight'))
+      messageInput.val('')
+      $.ajax({
+        url: '',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        data: {
+          csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val(),
+          message: message
+        },
+        success: function (data) {
+          const response = data.response
+          const messageItem = $('<a></a>').addClass('message sent list-group-item list-group-item-action item-left').html(`
+                                                          <div class="message-text">
+                                                            <div class="message-sender">
+                                                              <b>智能助手：</b>
+                                                            </div>
+                                                            <div class="message-content">${response}</div>
+                                                          </div>`)
+          messagesList.append(messageItem)
+          messagesList.scrollTop(messagesList.prop('scrollHeight'))
+        },
+        error: function (error) {
+          console.error(error)
+        }
+      })
+    })
+  </script>
 {% endblock %}

@@ -14,3 +14,5 @@ gunicorn==21.2.0
 
 psycopg2==2.9.9
 # mysqlclient
+
+# pip install qianfan 

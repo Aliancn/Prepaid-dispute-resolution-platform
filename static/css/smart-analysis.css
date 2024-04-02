@@ -1,0 +1,10 @@
+.item-left {
+    border: none;
+}
+
+#messages-list {
+    height: 430px;
+    border-collapse: collapse;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
