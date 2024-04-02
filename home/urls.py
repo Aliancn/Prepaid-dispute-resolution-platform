@@ -21,6 +21,7 @@ urlpatterns = [
     path('provements_upload/', views.provements_upload, name='provements_upload'),
     path('post_upload/', views.post_upload, name='post_upload'),
     path('test/', views.test, name='test'), 
+    path('documents/', views.documents, name='documents'),
 ]
 
 if settings.DEBUG:

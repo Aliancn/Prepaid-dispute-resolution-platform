@@ -103,7 +103,7 @@ def postCase(request):
 
 # 社区发表提交
 
-
+@login_required
 def post_upload(request):
     if request.method == 'POST':
         print('发表帖子')
@@ -303,3 +303,12 @@ def provements_upload(request):
 def test(request):
     res = User.objects.first().id
     return HttpResponse(res)
+
+# 案例库展示
+def documents(request):
+    documents = Documents.objects.all()
+    context = {
+        'segment': 'documents',
+        'documents': documents,
+    }
+    return render(request, 'pages/documents.html', context)
