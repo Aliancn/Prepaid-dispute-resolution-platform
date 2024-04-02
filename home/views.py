@@ -375,7 +375,14 @@ def test(request):
 
 # 案例库展示
 def documents(request):
-    documents = Documents.objects.all()
+    documents = [
+        Documents(title='Document {}'.format(i), content='Content for Document {}'.format(i), update_time='2021-01-01', file='documents/Document{}.pdf'.format(i))
+        for i in range(1, 21)  # 创建 20 个 document 对象，每页显示 10 条记录，所以共两页
+    ]
+
+    context = {
+        'documents': documents
+    }
     context = {
         'segment': 'documents',
         'documents': documents,

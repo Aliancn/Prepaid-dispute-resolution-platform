@@ -13,84 +13,59 @@
 <section style="margin-top: 100px;">
     <div class="container py-4">
         <div class="card">
-            <div class="card-body">
+            <div class="card-header py-2">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
-                            <input class="form-control datepicker" placeholder="Please select date" type="text">
+                            <input class="form-control datepicker" placeholder="点击选择更新日期" type="text">
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-search" aria-hidden="true"></i></span>
-                            <input class="form-control" placeholder="Search" type="text">
+                            <input class="form-control" placeholder="标题" type="text">
                         </div>
                     </div>  
                     <div class="col-md-4">
-                        <button type="button" class="btn bg-gradient-primary w-auto me-1 mb-0">Primary</button>
+                        <button type="button" class="btn bg-gradient-primary w-auto me-1 mb-0">查询</button>
                     </div>
-                </div>                
-                <table class="table table-hover">
-                    <thead> 
-                        <th>标题</th>
-                        <th>内容</th>
-                        <th>更新时间</th>
-                        <th>文件</th>                      
-                    </thead>
-                    <tbody>
-                        {% comment %} {% for document in documents %}
-                            <td>{{ document.title }}</td>
-                            <td>{{ document.content }}</td>
-                            <td>{{ document.updated_time }}</td>
-                            <td><a href="{{ document.file.url }}">{{ document.file.name }}</a></td>
-                        {% endfor %} {% endcomment %}
-                        <tr>
-                            <td>Document 1</td>
-                            <td>Document 1 content</td>
-                            <td>2021-01-01</td>
-                            <td><a href="{% static 'documents/Document1.pdf' %}">Document 1</a></td>
-                        </tr>
-                        <tr>
-                            <td>Document 2</td>
-                            <td>Document 2 content</td>
-                            <td>2021-01-01</td>
-                            <td><a href="{% static 'documents/Document2.pdf' %}">Document 2</a></td>
-                        </tr>
-                        <tr>
-                            <td>Document 3</td>
-                            <td>Document 3 content</td>
-                            <td>2021-01-01</td>
-                            <td><a href="{% static 'documents/Document3.pdf' %}">Document 3</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="row justify-space-between py-2">
-                    <div class="col-lg-4 mx-auto">
-                        <ul class="pagination pagination-primary m-4">
-                            <li class="page-item">
+                </div> 
+            </div>
+            <div class="card-body pt-2">
+                <div class="table-responsive" >
+                    <table class="table align-items-center mb-0" style="table-layout: fixed; width=100%">
+                        <thead> 
+                            <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 15%">标题</th>
+                            <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 55%">概要</th>
+                            <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 15%">更新时间</th>
+                            <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 15%">文件</th>                      
+                        </thead>
+                        <tbody>
+                            {% for document in documents %}
+                                <tr class="text-secondary text-x font-weight-bolder opacity-7">    
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.title }}</td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.content }}</td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.update_time }}</td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;"><a href="{{ document.file.url }}">{{ document.file.name }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row justify-content-between py-2">
+                    <div class="col-lg-4">
+                        <ul class="pagination pagination-primary m-4" id="pagination">
+                            <li class="page-item disabled" id="previous-page">
                                 <a class="page-link" href="javascript:;" aria-label="Previous">
-                                    <span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i></span>
+                                    <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
                             <li class="page-item active">
                                 <a class="page-link" href="javascript:;">1</a>
                             </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:;">2</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:;">3</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:;">4</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="javascript:;">5</a>
-                            </li>
-                            <li class="page-item">
+                            <!-- Other page links will be dynamically added here -->
+                            <li class="page-item" id="next-page">
                                 <a class="page-link" href="javascript:;" aria-label="Next">
-                                    <span aria-hidden="true"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+                                    <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
                         </ul>
@@ -106,8 +81,98 @@
 
 {% block javascripts %}
 <script>
-    if (document.querySelector(".datepicker")) {
-       flatpickr(".datepicker", {});
+document.addEventListener('DOMContentLoaded', function() {
+    var tableRows = document.querySelectorAll('.table tbody tr');
+    var pageSize = 10;
+    var pageCount = Math.ceil(tableRows.length / pageSize);
+    var currentPage = 1;
+    var paginationElement = document.getElementById('pagination');
+
+    function showPage(page) {
+        var startIndex = (page - 1) * pageSize;
+        var endIndex = startIndex + pageSize;
+
+        tableRows.forEach(function(row, index) {
+            if (index >= startIndex && index < endIndex) {
+                row.style.display = 'table-row';
+            } else {
+                row.style.display = 'none';
+            }
+        });
     }
+
+    function updatePagination() {
+        while (paginationElement.firstChild) {
+            paginationElement.removeChild(paginationElement.firstChild);
+        }
+
+        var previousButton = document.createElement('li');
+        previousButton.className = 'page-item';
+        previousButton.id = 'previous-page';
+        if (currentPage === 1) {
+            previousButton.classList.add('disabled');
+        }
+        var previousLink = document.createElement('a');
+        previousLink.className = 'page-link';
+        previousLink.href = 'javascript:;';
+        previousLink.setAttribute('aria-label', 'Previous');
+        previousLink.innerHTML = '<span aria-hidden="true">&laquo;</span>';
+        previousButton.appendChild(previousLink);
+        paginationElement.appendChild(previousButton);
+
+        for (var i = 1; i <= pageCount; i++) {
+            var pageItem = document.createElement('li');
+            pageItem.className = 'page-item';
+            if (i === currentPage) {
+                pageItem.classList.add('active');
+            }
+            var pageLink = document.createElement('a');
+            pageLink.className = 'page-link';
+            pageLink.href = 'javascript:;';
+            pageLink.innerHTML = i;
+            pageItem.appendChild(pageLink);
+            paginationElement.appendChild(pageItem);
+        }
+
+        var nextButton = document.createElement('li');
+        nextButton.className = 'page-item';
+        nextButton.id = 'next-page';
+        if (currentPage === pageCount) {
+            nextButton.classList.add('disabled');
+        }
+        var nextLink = document.createElement('a');
+        nextLink.className = 'page-link';
+        nextLink.href = 'javascript:;';
+        nextLink.setAttribute('aria-label', 'Next');
+        nextLink.innerHTML = '<span aria-hidden="true">&raquo;</span>';
+        nextButton.appendChild(nextLink);
+        paginationElement.appendChild(nextButton);
+
+        // Event listeners for pagination buttons
+        var pageLinks = document.querySelectorAll('.pagination li.page-item:not(.disabled) a.page-link');
+        pageLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                var clickedPage = parseInt(this.innerHTML);
+                if (!isNaN(clickedPage)) {
+                    currentPage = clickedPage;
+                    showPage(currentPage);
+                    updatePagination();
+                } else if (this.parentNode.id === 'previous-page') {
+                    currentPage--;
+                    showPage(currentPage);
+                    updatePagination();
+                } else if (this.parentNode.id === 'next-page') {
+                    currentPage++;
+                    showPage(currentPage);
+                    updatePagination();
+                }
+            });
+        });
+    }
+
+    showPage(currentPage);
+    updatePagination();
+});
 </script>
 {% endblock %}
+
