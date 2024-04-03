@@ -6,7 +6,7 @@ databases:
 services:
   - type: web
     name: prepaid-dispute-resolution-platform
-    plan: starter
+    plan: free
     env: python
     # region: frankfurt  
     buildCommand: "./build.sh"
