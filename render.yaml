@@ -17,7 +17,7 @@ services:
       - key: DATABASE_URL
         fromDatabase:
           name: law_db
-          property: connectionString
+          property: postgres://low:d1kZThoPZqo8P3oWFrfUW8Fz0ebbBpuf@dpg-co6g9isf7o1s73diqefg-a/law_db
       - key: SECRET_KEY
         generateValue: true
       - key: WEB_CONCURRENCY
