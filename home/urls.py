@@ -6,7 +6,7 @@ from core import settings
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.home, name='index'),
     path('home/', views.home, name='home'),
     path('smart-analysis/', views.smartAnalysis.as_view(), name='smart-analysis'),
     path('dispute-cases/', views.disputeCases, name='dispute-list'),

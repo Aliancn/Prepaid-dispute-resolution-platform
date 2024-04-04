@@ -112,21 +112,21 @@ DB_HOST = os.getenv('DB_HOST', None)
 DB_PORT = os.getenv('DB_PORT', None)
 DB_NAME = os.getenv('DB_NAME', None)
 
-DATABASES = {
-    'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
-}
-
-# if DB_ENGINE and DB_NAME and DB_USERNAME:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.' + DB_ENGINE,
-#             'NAME': DB_NAME,
-#             'USER': DB_USERNAME,
-#             'PASSWORD': DB_PASS,
-#             'HOST': DB_HOST,
-#             'PORT': DB_PORT,
-#         },
-#     }
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600),
+    }
+elif DB_ENGINE and DB_NAME and DB_USERNAME:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.' + DB_ENGINE,
+            'NAME': DB_NAME,
+            'USER': DB_USERNAME,
+            'PASSWORD': DB_PASS,
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
+        },
+    }
 # else:
 #     # Replace the SQLite DATABASES configuration with PostgreSQL:
 #     DATABASES = {
