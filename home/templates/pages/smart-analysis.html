@@ -20,24 +20,28 @@
         <div class="col-md-2">
           <div class="list-group">
             <a href="#" class="list-group-item list-group-item-action active">Topic</a>
-            <a href="#" class="list-group-item list-group-item-action">topic 1</a>
-            <a href="#" class="list-group-item list-group-item-action">topic 2</a>
-            <a href="#" class="list-group-item list-group-item-action">topic 3</a>
-            <a href="#" class="list-group-item list-group-item-action">topic 4</a>
+            <a href="{% url 'smart-analysis' %}?topic={{ topic }}" class="list-group-item list-group-item-action" >topic 1</a>
+            {% for topic in topics %}
+              {% if topic == topic_now %}
+                <a href="{% url 'smart-analysis' %}?topic={{ topic }}" class="list-group-item list-group-item-action active">{{ topic }}</a>
+              {% else %}
+                <a href="{% url 'smart-analysis' %}?topic={{ topic }}" class="list-group-item list-group-item-action">{{ topic }}</a>
+              {% endif %}
+            {% endfor %}
           </div>
+          {% include 'includes/law-model.html' %}
         </div>
         <div class="col-md-10">
           {% comment %}聊天框{% endcomment %}
           <div class="card flex-grow-1">
-            <div class="card-header bg-primary text-white">
+            {% comment %} <div class="card-header bg-primary text-white" style="padding: 10px;">
               <div class="row">
                 <div class="col-md-6 text-left">维权智能助手</div>
                 <div class="col-md-6 text-end">
-                  <b>欢迎, {{ user.username }}</b>
-                  <a style="color: yellow;" href="#">new</a>
+                  {% include 'includes/law-model.html' %}
                 </div>
               </div>
-            </div>
+            </div> {% endcomment %}
             <div class="card-body messages-box">
               <div class="list-group" id="messages-list">
                 {% for msg in history %}
@@ -93,12 +97,12 @@
         return
       }
       const messageItem = $('<a></a>').addClass('message sent list-group-item list-group-item-action item-left').html(`
-                                                                  <div class="message-text">
-                                                                    <div class="message-sender">
-                                                                      <b>你：</b>
-                                                                    </div>
-                                                                    <div class="message-content">${message}</div>
-                                                                  </div>`)
+                                                                                                                                      <div class="message-text">
+                                                                                                                                        <div class="message-sender">
+                                                                                                                                          <b>你：</b>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="message-content">${message}</div>
+                                                                                                                                      </div>`)
       messagesList.append(messageItem)
       messagesList.scrollTop(messagesList.prop('scrollHeight'))
       messageInput.val('')
@@ -108,17 +112,18 @@
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         data: {
           csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val(),
-          message: message
+          message: message,
+          topic: '{{ topic_now }}'
         },
         success: function (data) {
           const response = data.response
           const messageItem = $('<a></a>').addClass('message sent list-group-item list-group-item-action item-left').html(`
-                                                          <div class="message-text">
-                                                            <div class="message-sender">
-                                                              <b>智能助手：</b>
-                                                            </div>
-                                                            <div class="message-content">${response}</div>
-                                                          </div>`)
+                                                                                                                              <div class="message-text">
+                                                                                                                                <div class="message-sender">
+                                                                                                                                  <b>智能助手：</b>
+                                                                                                                                </div>
+                                                                                                                                <div class="message-content">${response}</div>
+                                                                                                                              </div>`)
           messagesList.append(messageItem)
           messagesList.scrollTop(messagesList.prop('scrollHeight'))
         },
@@ -127,5 +132,49 @@
         }
       })
     })
+    
+    function addtopic(event) {
+      event.preventDefault() // 阻止表单的默认提交行为
+      var topic = document.getElementById('newtopic').value
+      // 在这里添加你的代码，例如发送一个 AJAX 请求
+      console.log(topic)
+      // 发送一个 AJAX 请求新建一个 topic
+      $.ajax({
+        url: 'topic/',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        data: {
+          csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val(),
+          topic: topic
+        },
+        success: function (data) {
+          console.log(data)
+          location.reload()
+        },
+        error: function (error) {
+          console.error(error)
+        }
+      })
+    
+      function chooseTopic(event) {
+        event.preventDefault() // 阻止 a 标签的默认行为
+        var topic = $(event.target).text() // 获取点击的 a 标签的文本值
+        $.ajax({
+          url: '',
+          method: 'GET',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          data: {
+            csrfmiddlewaretoken: $('[name=csrfmiddlewaretoken]').val(),
+            topic: topic
+          },
+          success: function (response) {
+            // 处理响应
+          },
+          error: function (error) {
+            console.error(error)
+          }
+        })
+      }
+    }
   </script>
 {% endblock %}

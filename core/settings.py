@@ -21,7 +21,7 @@ from str2bool import str2bool
 import dj_database_url
 
 
-load_dotenv()  # take environment variables from .env.
+load_dotenv(override=True)  # take environment variables from .env.
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,7 +37,7 @@ if not SECRET_KEY:
 
 # Enable/Disable DEBUG Mode
 DEBUG = str2bool(os.environ.get('DEBUG'))
-# print(' DEBUG -> ' + str(DEBUG) )
+print(' DEBUG -> ' + str(DEBUG))
 
 # Docker HOST
 ALLOWED_HOSTS = ['*']
@@ -188,5 +188,5 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/accounts/login/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

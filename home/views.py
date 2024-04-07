@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 
-from home.models import ChatMessage, Image, Provements, UserInfo, Post, Documents, Image, File, User
+from home.models import ChatItem, ChatRecord, Image, Provements, UserInfo, Post, Documents, Image, File, User
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -30,16 +30,8 @@ def home(request):
     }
     return render(request, 'pages/home.html', context)
 
-# 解决方案生成
 
-
-def smartAnalysis(request):
-    context = {
-        'segment': 'smart-analysis',
-    }
-    return render(request, 'pages/smart-analysis.html', context)
-
-
+@login_required
 def disputeCases(request):
     context = {
         'segment': 'dispute-cases',
@@ -53,48 +45,6 @@ def lastNews(request):
     }
     return render(request, 'pages/last-news.html', context)
 
-
-def myProvements(request):
-    context = {
-        'segment': 'my-provements',
-    }
-    return render(request, 'pages/my-provements.html', context)
-
-# Create your views here.
-
-
-def index(request):
-
-    # Page from the theme
-    return render(request, 'pages/index.html')
-
-
-def home(request):
-    context = {
-        'segment': 'home',
-    }
-    return render(request, 'pages/home.html', context)
-
-
-def smartAnalysis(request):
-    context = {
-        'segment': 'smart-analysis',
-    }
-    return render(request, 'pages/smart-analysis.html', context)
-
-
-def disputeCases(request):
-    context = {
-        'segment': 'dispute-cases',
-    }
-    return render(request, 'pages/dispute-list.html', context)
-
-
-def lastNews(request):
-    context = {
-        'segment': 'last-news',
-    }
-    return render(request, 'pages/last-news.html', context)
 
 # 社区发表页面
 
@@ -145,10 +95,9 @@ def like(request, post_id=0):
     post.save()
     return HttpResponse(post.like)
 
-# 展示详细post
-
 
 def postCaseDetails(request, post_id=0):
+    # 展示详细post
     post_details = Post.objects.get(id=post_id)
     title = post_details.title
     content = post_details.content
@@ -171,11 +120,9 @@ def postCaseDetails(request, post_id=0):
     }
     return render(request, 'pages/post-details.html', context)
 
-# 社区展示
-
 
 def successfulCases(request, page_id=1):
-
+    # 社区展示
     context = {
         'segment': 'successful-cases',
         'page_id': page_id,  # 1: 最热 2: 最新 3: 点赞
@@ -307,67 +254,91 @@ def provements_upload(request):
 
 # ai 智能分析
 class smartAnalysis(View):
-    def getHistory(self):
+    def getHistory(self, user, topic):
         history = []
         if self.request.user.is_authenticated:
-            history = ChatMessage.objects.filter(
-                user=self.request.user).order_by('created_at')
+            topic_history = ChatItem.objects.filter(
+                user=user.id, topic=topic).order_by('-created_at')
         return history
 
     def get(self, request):
         # history = self.getHistory()
         topic = request.GET.get('topic')
-        # history.filter(topic=topic)
-        # topic_history = [item for item in history.filter(topic=topic).values()]
-        topic_history = [
-            {
-                'user': 'user',
-                'topic': 'topic',
-                'message': 'message',
-                'response': 'response',
-                'created_at': 'time',
-            },
-            {
-                'user': 'user2',
-                'topic': 'topic2',
-                'message': 'message2',
-                'response': 'response2',
-                'created_at': 'time2',
-            },
-            {
-                'user': 'user3',
-                'topic': 'topic3',
-                'message': 'message3',
-                'response': 'response3',
-                'created_at': 'time3',
-            },
-            {
-                'user': 'user4',
-                'topic': 'topic4',
-                'message': 'message4',
-                'response': 'response4',
-                'created_at': 'time4',
-            },
-        ]
+        user = request.user
+        topics = []
+        if not user.is_authenticated:
+            topic_history = [
+                {
+                    'user': '未登陆',
+                    'topic': 'topic',
+                    'message': 'message',
+                    'response': 'response',
+                    'created_at': 'time',
+                },
+                {
+                    'user': '未登陆',
+                    'topic': 'topic2',
+                    'message': 'message2',
+                    'response': 'response2',
+                    'created_at': 'time2',
+                },
+            ]
+        else:
+            topics = ChatRecord.objects.get(user=user.id).topic
+            if topic:
+                topic_history = ChatItem.objects.filter(
+                    user=user.id, topic=topic).order_by('-created_at')
+            else:
+                topic_history = []
+
         context = {
             'segment': 'smart-analysis',
             'history': topic_history,
+            'topics': topics,
+            'topic_now': topic if topic else '未选择',
         }
         return render(request, 'pages/smart-analysis.html', context)
 
     def post(self, request):
+        # 登陆会保存历史信息，不登陆不会保存历史信息
         message = request.POST.get("message")
-        history = self.getHistory()
-        # if self.request.user.is_authenticated:
-        #     response = ask_with_chat_completion(history, message)
-        #     chat_message = ChatMessage(user=request.user, message=message, response=response,
-        #                                created_at=datetime.datetime.now())
-        #     chat_message.save()
-        # else:
-        # response = ask_with_completion(message)
-        response = qianfan_Yi_34B_Chat(message)
+        topic = request.POST.get("topic")
+        history = self.getHistory(self.request.user, topic)
+        if self.request.user.is_authenticated:
+            # TODO : 上下文传输
+            response = qianfan_Yi_34B_Chat(message)
+            if topic:
+                chat_message = ChatItem(user=request.user, topic=topic,
+                                        message=message, response=response.body['result'],
+                                        created_at=datetime.datetime.now())
+                chat_message.save()
+        else:
+            response = qianfan_Yi_34B_Chat(message)
         response = response.body['result']
         return JsonResponse({"message": message, "response": response})
+
+
+def smartAnalysisTopic(request):
+    # 新建topic
+    topic = request.POST.get('topic')
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse({"message": "未登录"})
+    if not topic:
+        return JsonResponse({"message": "未输入topic"})
+    # 检查是否存在相同topic
+    try:
+        topicSet = ChatRecord.objects.get(user=user.id)
+    except ChatRecord.DoesNotExist:
+        topicSet = ChatRecord.objects.create(user=user)
+
+    for item in topicSet.topic:
+        if item == topic:
+            return JsonResponse({"message": "topic已存在"})
+    # 创建新topic
+    topicSet.topic.append(topic)
+    topicSet.save()
+    return JsonResponse({"message": "创建成功"})
 
 
 def test(request):

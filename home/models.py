@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 
 # 用户model
@@ -54,20 +54,18 @@ class Post (models.Model):
     def __str__(self):
         return self.title
 
-# 案例库文件model
-
 
 class Documents(models.Model):
+    # 案例库文件model
     id = models.AutoField(primary_key=True)
     update_time = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100)
     content = models.TextField()
     file = models.FileField(upload_to='static/files/', null=True, blank=True)
 
-# 图片model
-
 
 class Image(models.Model):
+    # 图片model
     id = models.AutoField(primary_key=True)
     update_time = models.DateTimeField(auto_now=True)
     intro = models.CharField(max_length=100)  # 简介
@@ -76,10 +74,10 @@ class Image(models.Model):
 
     def __str__(self):
         return self.intro
-# 文件model
 
 
 class File(models.Model):
+    # 文件model
     id = models.AutoField(primary_key=True)
     update_time = models.DateTimeField(auto_now=True)
     intro = models.CharField(max_length=100)  # 简介
@@ -88,8 +86,9 @@ class File(models.Model):
     def __str__(self):
         return self.intro
 
-# ai资讯数据model
-class ChatMessage(models.Model):
+
+class ChatItem(models.Model):
+    # 单个的聊天记录 包含一问一答
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     topic = models.CharField(max_length=100)
@@ -99,3 +98,14 @@ class ChatMessage(models.Model):
 
     def __str__(self):
         return f"{self.user.username}: {self.message}"
+
+
+class ChatRecord(models.Model):
+    # 用户的聊天记录 包含所有的topic
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    topic = ArrayField(models.CharField(max_length=100),
+                       blank=True, default=list)
+
+    def __str__(self):
+        return f"{self.user.username}"

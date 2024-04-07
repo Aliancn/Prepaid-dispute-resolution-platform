@@ -6,9 +6,11 @@ from core import settings
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='index'),
+    path('', views.home, name='/'),
+    path('index/', views.index, name='index'),
     path('home/', views.home, name='home'),
     path('smart-analysis/', views.smartAnalysis.as_view(), name='smart-analysis'),
+    path('smart-analysis/topic/', views.smartAnalysisTopic, name='add-topic'),
     path('dispute-cases/', views.disputeCases, name='dispute-list'),
     path('last-news/', views.lastNews, name='last-news'),
     path('successful-cases/<int:page_id>/',
@@ -20,7 +22,7 @@ urlpatterns = [
     path('my-provements/', views.myProvements, name='my-provements'),
     path('provements_upload/', views.provements_upload, name='provements_upload'),
     path('post_upload/', views.post_upload, name='post_upload'),
-    path('test/', views.test, name='test'), 
+    path('test/', views.test, name='test'),
     path('documents/', views.documents, name='documents'),
 ]
 
