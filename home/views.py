@@ -284,7 +284,10 @@ class smartAnalysis(View):
                 },
             ]
         else:
-            topics = ChatRecord.objects.get(user=user.id).topic
+            try:
+                topics = ChatRecord.objects.get(user=user.id).topic
+            except ChatRecord.DoesNotExist:
+                topics = []
             if topic:
                 topic_history = ChatItem.objects.filter(
                     user=user.id, topic=topic).order_by('-created_at')
