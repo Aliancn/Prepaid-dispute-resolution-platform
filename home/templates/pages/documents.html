@@ -20,20 +20,20 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="input-group">
-                            <input class="form-control datepicker" placeholder="点击选择更新日期" type="text">
+                            <input class="form-control datepicker" id="datePick" placeholder="点击选择更新日期" type="text">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="input-group">
-                            <input class="form-control" placeholder="标题" type="text">
+                            <input class="form-control" id="titleInput" placeholder="标题" type="text">
                         </div>
                     </div>  
                     <div class="col-md-4">
-                        <button type="button" class="btn bg-gradient-primary w-auto me-1 mb-0">查询</button>
+                        <button type="button" class="btn bg-gradient-primary w-auto me-1 mb-0" id="queryButton">查询</button>
                     </div>
                 </div> 
                 <div class="table-responsive" >
-                    <table class="table align-items-center mb-0" style="table-layout: fixed; width=100%">
+                    <table class="table align-items-center mb-0" id="DocumentTable" style="table-layout: fixed; width=100%">
                         <thead> 
                             <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 15%">标题</th>
                             <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 55%">概要</th>
@@ -45,7 +45,7 @@
                                 <tr class="text-secondary text-x font-weight-bolder opacity-7">    
                                     <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.title }}</td>
                                     <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.content }}</td>
-                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.update_time }}</td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.update_time|date:"Y-m-d" }}</td>
                                     <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;"><a href="{{ document.file.url }}">{{ document.file.name }}</a></td>
                                 </tr>
                             {% endfor %}
@@ -81,99 +81,8 @@
 {% endblock %}
 
 {% block javascripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var tableRows = document.querySelectorAll('.table tbody tr');
-    var pageSize = 10;
-    var pageCount = Math.ceil(tableRows.length / pageSize);
-    var currentPage = 1;
-    var paginationElement = document.getElementById('pagination');
-
-    function showPage(page) {
-        var startIndex = (page - 1) * pageSize;
-        var endIndex = startIndex + pageSize;
-
-        tableRows.forEach(function(row, index) {
-            if (index >= startIndex && index < endIndex) {
-                row.style.display = 'table-row';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
-
-    function updatePagination() {
-        while (paginationElement.firstChild) {
-            paginationElement.removeChild(paginationElement.firstChild);
-        }
-
-        var previousButton = document.createElement('li');
-        previousButton.className = 'page-item';
-        previousButton.id = 'previous-page';
-        if (currentPage === 1) {
-            previousButton.classList.add('disabled');
-        }
-        var previousLink = document.createElement('a');
-        previousLink.className = 'page-link';
-        previousLink.href = 'javascript:;';
-        previousLink.setAttribute('aria-label', 'Previous');
-        previousLink.innerHTML = '<span aria-hidden="true">&laquo;</span>';
-        previousButton.appendChild(previousLink);
-        paginationElement.appendChild(previousButton);
-
-        for (var i = 1; i <= pageCount; i++) {
-            var pageItem = document.createElement('li');
-            pageItem.className = 'page-item';
-            if (i === currentPage) {
-                pageItem.classList.add('active');
-            }
-            var pageLink = document.createElement('a');
-            pageLink.className = 'page-link';
-            pageLink.href = 'javascript:;';
-            pageLink.innerHTML = i;
-            pageItem.appendChild(pageLink);
-            paginationElement.appendChild(pageItem);
-        }
-
-        var nextButton = document.createElement('li');
-        nextButton.className = 'page-item';
-        nextButton.id = 'next-page';
-        if (currentPage === pageCount) {
-            nextButton.classList.add('disabled');
-        }
-        var nextLink = document.createElement('a');
-        nextLink.className = 'page-link';
-        nextLink.href = 'javascript:;';
-        nextLink.setAttribute('aria-label', 'Next');
-        nextLink.innerHTML = '<span aria-hidden="true">&raquo;</span>';
-        nextButton.appendChild(nextLink);
-        paginationElement.appendChild(nextButton);
-
-        // Event listeners for pagination buttons
-        var pageLinks = document.querySelectorAll('.pagination li.page-item:not(.disabled) a.page-link');
-        pageLinks.forEach(function(link) {
-            link.addEventListener('click', function() {
-                var clickedPage = parseInt(this.innerHTML);
-                if (!isNaN(clickedPage)) {
-                    currentPage = clickedPage;
-                    showPage(currentPage);
-                    updatePagination();
-                } else if (this.parentNode.id === 'previous-page') {
-                    currentPage--;
-                    showPage(currentPage);
-                    updatePagination();
-                } else if (this.parentNode.id === 'next-page') {
-                    currentPage++;
-                    showPage(currentPage);
-                    updatePagination();
-                }
-            });
-        });
-    }
-
-    showPage(currentPage);
-    updatePagination();
-});
-</script>
+<script src="{% static 'js/documents.js' %}"></script>
 {% endblock %}
+
+
 

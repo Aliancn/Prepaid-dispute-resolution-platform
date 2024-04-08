@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils.decorators import method_decorator
 
 from utils.qianfanmodle import qianfan_Yi_34B_Chat
 
@@ -48,7 +49,7 @@ def lastNews(request):
 
 # 社区发表页面
 
-
+@login_required
 def postCase(request):
     context = {
         'segment': 'post',
@@ -254,6 +255,7 @@ def provements_upload(request):
 
 # ai 智能分析
 class smartAnalysis(View):
+    @method_decorator(login_required)
     def getHistory(self, user, topic):
         history = []
         if self.request.user.is_authenticated:
@@ -261,6 +263,7 @@ class smartAnalysis(View):
                 user=user.id, topic=topic).order_by('-created_at')
         return history
 
+    @method_decorator(login_required)
     def get(self, request):
         # history = self.getHistory()
         topic = request.GET.get('topic')
@@ -349,18 +352,10 @@ def test(request):
     return HttpResponse(res)
 
 # 案例库展示
-
-
+@login_required
 def documents(request):
-    documents = [
-        Documents(title='Document {}'.format(i), content='Content for Document {}'.format(
-            i), update_time='2021-01-01', file='documents/Document{}.pdf'.format(i))
-        for i in range(1, 21)  # 创建 20 个 document 对象，每页显示 10 条记录，所以共两页
-    ]
+    documents = Documents.objects.all()
 
-    context = {
-        'documents': documents
-    }
     context = {
         'segment': 'documents',
         'documents': documents,
