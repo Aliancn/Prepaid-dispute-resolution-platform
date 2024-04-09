@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    'theme_soft_design',
+    # 'theme_soft_design',
     "home",
     "base",
 ]
@@ -190,5 +190,5 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/home/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
