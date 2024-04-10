@@ -41,10 +41,12 @@
                     <li class="list-group-item">
                       <div class="card">
                         <div class="card-body pt-2 mx-3 mt-3 position-relative z-index-0 row">
-                          <div class="col-2">
-                            <a href="{% url 'post-details' item.post_id %}" class="d-block"><img src="{{ item.cover }}" class="img-fluid border-radius-md" /></a>
-                          </div>
-                          <div class="col-10">
+                          {% if item.cover %}
+                            <div class="col-2">
+                              <a href="{% url 'post-details' item.post_id %}" class="d-block"><img src=" {{ item.cover }}" class="img-fluid border-radius-md" /></a>
+                            </div>
+                          {% endif %}
+                          <div class="col">
                             <a href="{% url 'post-details' item.post_id %}" class="card-title h5 d-block text-darker">{{ item.title }}</a>
                             <p class="card-description mb-4">{{ item.content }}</p>
                             <div class="d-flex align-items-center">
@@ -74,9 +76,11 @@
                     <li class="list-group-item">
                       <div class="card">
                         <div class="card-body pt-2 mx-3 mt-3 position-relative z-index-0 row">
-                          <div class="col-2">
-                            <a href="javascript:;" class="d-block"><img src="{{ item.cover }}" class="img-fluid border-radius-md" /></a>
-                          </div>
+                          {% if item.cover %}
+                            <div class="col-2">
+                              <a href="{% url 'post-details' item.post_id %}" class="d-block"><img src=" {{ item.cover }}" class="img-fluid border-radius-md" /></a>
+                            </div>
+                          {% endif %}
                           <div class="col-10">
                             <a href="javascript:;" class="card-title h5 d-block text-darker">{{ item.title }}</a>
                             <p class="card-description mb-4">{{ item.content }}</p>
@@ -107,9 +111,11 @@
                     <li class="list-group-item">
                       <div class="card">
                         <div class="card-body pt-2 mx-3 mt-3 position-relative z-index-0 row">
-                          <div class="col-2">
-                            <a href="javascript:;" class="d-block"><img src="{{ item.cover }}" class="img-fluid border-radius-md" /></a>
-                          </div>
+                          {% if item.cover %}
+                            <div class="col-2">
+                              <a href="{% url 'post-details' item.post_id %}" class="d-block"><img src=" {{ item.cover }}" class="img-fluid border-radius-md" /></a>
+                            </div>
+                          {% endif %}
                           <div class="col-10">
                             <a href="javascript:;" class="card-title h5 d-block text-darker">{{ item.title }}</a>
                             <p class="card-description mb-4">{{ item.content }}</p>

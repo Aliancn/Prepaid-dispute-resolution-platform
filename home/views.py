@@ -124,71 +124,91 @@ def postCaseDetails(request, post_id=0):
 
 def successfulCases(request, page_id=1):
     # 社区展示
+
+    discussion_sample = [
+        {
+            'post_id': 0,
+            'cover': '/media/static/images/covers/1.png',
+            'title': '一口价黄金套路多',
+            'content': '多名消费者向消费者报道反映称一口价黄金存在销售套路，涉及的品牌包括老凤祥、周六福、中国黄金等。他们普遍提及，购买一口价黄金时导购并未如实告知产品克重，而且导购有意回避消费者追询重量和称重的环节。后续消费者称重后才发现每克黄金的单价在800元至1200元，远超克重计价金饰的单价。',
+            'avatar': '/media/static/images/avatar/1.png',
+            'username': '黄先生',
+            'date': '2022-03-04',
+            'like': '100'
+        },
+        {
+            'post_id': 2,
+            'cover': '/media/static/images/covers/2.png',
+            'title': '手机租赁价格高',
+            'content': '多名消费者在投诉平台发起投诉称，手机租赁平台租机价格过高，涉及的平台包括俏租机、八戒租、爱租机、优品租等。根据他们的反馈，租赁平台主要提供“租完归还（随时买断）”和“租完即送”两种租赁方案。但两个方案的租机费用均远高于手机的新品发售价。以爱租机上的全新iPhone 15（128G）为例，在租完即送模式下的总花费为7319元。',
+            'avatar': '/media/static/images/avatar/2.png',
+            'username': '陈先生',
+            'date': '2023-06-09',
+            'like': '100'
+        },
+        {
+            'post_id': 3,
+            'cover': '/media/static/images/covers/3.png',
+            'title': '智能家电配套App停止维护，消费者日常使用受影响',
+            'content': '多名消费者不满小狗扫地机器人无法连接配套App正常使用。在断连状态下，机器人失去地图规划功能，无法执行自定义避障设定，清扫路线杂乱无章。而小狗客服没有明确回复App的修复时间。据客服介绍，目前小狗已不再经营扫地机器人品类。这或是小狗机器人App停止维护的原因。多名消费者投诉称阿里智能App下架以后，公牛智能插座变成了“摆设”，无法执行远程控制和耗电量统计的功能。',
+            'avatar': '/media/static/images/avatar/3.png',
+            'username': '李先生',
+            'date': '2023-07-01',
+            'like': '100'
+        },
+        {
+            'post_id': 4,
+            'cover': '/media/static/images/covers/4.png',
+            'title': '套路贷屡禁不止',
+            'content': '用户张女士在信用飞平台申请了16000元的贷款。贷款期限为1年（十二期），还款方式为等额本息。但她查看账单才发现每期还款除了本金和利息以外，还有担保费。从还款记录来看，她每期还款额（含担保费）大致在1606.93元，换算下来的利率超过了35.9%。她认为担保费比利息还要高，算上担保费后，实际利率已经超过相关规定，与宣称的低利率并不相符。',
+            'avatar': '/media/static/images/avatar/4.png',
+            'username': '张女士',
+            'date': '2021-07-01',
+            'like': '100'
+        },
+        {
+            'post_id': 5,
+            'cover': '/media/static/images/covers/IMG_C95ABA542BE4-1.jpeg',
+            'title': '关于某某案件的讨论',
+            'content': 'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            'avatar': '/media/static/images/covers/IMG_C95ABA542BE4-1.jpeg',
+            'username': '某某律师',
+            'date': '2021-07-01',
+            'like': '100'
+        },
+        {
+            'post_id': 6,
+            'cover': '',
+            'title': '关于某某案件的讨论(无cover)',
+            'content': 'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            'avatar': '/media/static/images/avatar/avt.jpg',
+            'username': '某某律师',
+            'date': '2021-07-01',
+            'like': '100'
+        }
+    ]
+    # 读取post 
+    discussion = []
+    postall = Post.objects.all()
+    for post in postall:
+        userinfo = UserInfo.objects.filter(user=post.user.id).first()
+        discussion.append({
+            'post_id': post.id,
+            'cover': post.cover.url if post.cover else '',
+            'title': post.title,
+            'content':  post.content,
+            'avatar': userinfo.avatar.url if userinfo.avatar else '',
+            'username': userinfo.user.username,
+            'date': post.post_time,
+            'like': post.like
+        })
+
+    discussion_sample = discussion_sample + discussion
+
     context = {
         'segment': 'successful-cases',
-        'page_id': page_id,  # 1: 最热 2: 最新 3: 点赞
-        'discussion': [
-            {
-                'post_id': 0,
-                'cover': '/static/images/case-cover/1.png',
-                'title': '一口价黄金套路多',
-                'content': '多名消费者向消费者报道反映称一口价黄金存在销售套路，涉及的品牌包括老凤祥、周六福、中国黄金等。他们普遍提及，购买一口价黄金时导购并未如实告知产品克重，而且导购有意回避消费者追询重量和称重的环节。后续消费者称重后才发现每克黄金的单价在800元至1200元，远超克重计价金饰的单价。',
-                'avatar': '/static/images/avatar/1.png',
-                'username': '黄先生',
-                'date': '2022-03-04',
-                'like': '100'
-            },
-            {
-                'post_id': 2,
-                'cover': '/static/images/case-cover/2.png',
-                'title': '手机租赁价格高',
-                'content': '多名消费者在投诉平台发起投诉称，手机租赁平台租机价格过高，涉及的平台包括俏租机、八戒租、爱租机、优品租等。根据他们的反馈，租赁平台主要提供“租完归还（随时买断）”和“租完即送”两种租赁方案。但两个方案的租机费用均远高于手机的新品发售价。以爱租机上的全新iPhone 15（128G）为例，在租完即送模式下的总花费为7319元。',
-                'avatar': '/static/images/avatar/2.png',
-                'username': '陈先生',
-                'date': '2023-06-09',
-                'like': '100'
-            },
-            {
-                'post_id': 3,
-                'cover': '/static/images/case-cover/3.png',
-                'title': '智能家电配套App停止维护，消费者日常使用受影响',
-                'content': '多名消费者不满小狗扫地机器人无法连接配套App正常使用。在断连状态下，机器人失去地图规划功能，无法执行自定义避障设定，清扫路线杂乱无章。而小狗客服没有明确回复App的修复时间。据客服介绍，目前小狗已不再经营扫地机器人品类。这或是小狗机器人App停止维护的原因。多名消费者投诉称阿里智能App下架以后，公牛智能插座变成了“摆设”，无法执行远程控制和耗电量统计的功能。',
-                'avatar': '/static/images/avatar/3.png',
-                'username': '李先生',
-                'date': '2023-07-01',
-                'like': '100'
-            },
-            {
-                'post_id': 4,
-                'cover': '/static/images/case-cover/4.png',
-                'title': '套路贷屡禁不止',
-                'content': '用户张女士在信用飞平台申请了16000元的贷款。贷款期限为1年（十二期），还款方式为等额本息。但她查看账单才发现每期还款除了本金和利息以外，还有担保费。从还款记录来看，她每期还款额（含担保费）大致在1606.93元，换算下来的利率超过了35.9%。她认为担保费比利息还要高，算上担保费后，实际利率已经超过相关规定，与宣称的低利率并不相符。',
-                'avatar': '/static/images/avatar/4.png',
-                'username': '张女士',
-                'date': '2021-07-01',
-                'like': '100'
-            },
-            {
-                'post_id': 5,
-                'cover': '/static/images/case-test.jpeg',
-                'title': '关于某某案件的讨论',
-                'content': 'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                'avatar': '/static/images/avatar/avt.jpg',
-                'username': '某某律师',
-                'date': '2021-07-01',
-                'like': '100'
-            },
-            {
-                'post_id': 6,
-                'cover': '/static/images/case-test.jpeg',
-                'title': '关于某某案件的讨论',
-                'content': 'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                'avatar': '/static/images/avatar/avt.jpg',
-                'username': '某某律师',
-                'date': '2021-07-01',
-                'like': '100'
-            }
-        ],
+        'page_id': page_id,
+        'discussion': discussion_sample,
 
     }
     return render(request, 'pages/successful-cases.html', context)
@@ -352,6 +372,8 @@ def test(request):
     return HttpResponse(res)
 
 # 案例库展示
+
+
 @login_required
 def documents(request):
     documents = Documents.objects.all()
