@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 
-from utils.qianfanmodle import qianfan_Yi_34B_Chat
+from utils.qianfanmodle import qianfan_Yi_34B_Chat, qianfan_pre_Yi_34B_Chat
 
 # Create your views here.
 
@@ -278,12 +278,12 @@ class smartAnalysis(View):
     @method_decorator(login_required)
     def getHistory(self, user, topic):
         history = []
-        if self.request.user.is_authenticated:
+        if user.is_authenticated:
             topic_history = ChatItem.objects.filter(
                 user=user.id, topic=topic).order_by('-created_at')
         return history
 
-    @method_decorator(login_required)
+    # @method_decorator(login_required)
     def get(self, request):
         # history = self.getHistory()
         topic = request.GET.get('topic')
@@ -329,7 +329,7 @@ class smartAnalysis(View):
         # 登陆会保存历史信息，不登陆不会保存历史信息
         message = request.POST.get("message")
         topic = request.POST.get("topic")
-        history = self.getHistory(self.request.user, topic)
+        # history = self.getHistory(request.user, topic)
         if self.request.user.is_authenticated:
             # TODO : 上下文传输
             response = qianfan_Yi_34B_Chat(message)
@@ -339,7 +339,8 @@ class smartAnalysis(View):
                                         created_at=datetime.datetime.now())
                 chat_message.save()
         else:
-            response = qianfan_Yi_34B_Chat(message)
+            response = qianfan_pre_Yi_34B_Chat(message)
+            # response = qianfan_Yi_34B_Chat(message)
         response = response.body['result']
         return JsonResponse({"message": message, "response": response})
 
