@@ -60,13 +60,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    'theme_soft_design',
+    # 'theme_soft_design',
     "home",
+    "base",
 ]
 
 # media
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -94,6 +95,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.media",
             ],
         },
     },
@@ -176,7 +178,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'base', 'static'),
 ]
 
 if not DEBUG:
@@ -188,5 +191,5 @@ if not DEBUG:
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/home/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
