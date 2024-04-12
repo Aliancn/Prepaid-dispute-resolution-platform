@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordChangeView, PasswordResetConfirmView
 from .forms import RegistrationForm, UserLoginForm, UserPasswordResetForm, UserSetPasswordForm, UserPasswordChangeForm
@@ -31,7 +32,7 @@ def register(request):
         if form.is_valid():
             form.save()
             print("Account created successfully!")
-            return redirect('/accounts/login')
+            return JsonResponse({'redirect': '/accounts/login/'})
         else:
             print("Registration failed!")
     else:
