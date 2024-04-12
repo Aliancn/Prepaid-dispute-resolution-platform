@@ -34,8 +34,10 @@ def home(request):
 
 @login_required
 def disputeCases(request):
+    documents = Documents.objects.all()
     context = {
         'segment': 'dispute-cases',
+        'documents': documents,
     }
     return render(request, 'pages/dispute-list.html', context)
 
@@ -223,6 +225,7 @@ def provements_upload(request):
         file_provements = request.FILES.getlist('file_provements')
         file_info = request.POST.getlist('file_info')
         img_info = request.POST.getlist('img_info')
+        selectedDocument_id = request.POST.get('selected_document')
 
         img_ids = []
         if img_provements:
@@ -241,8 +244,10 @@ def provements_upload(request):
                     file=file, intro=current_file_info)
                 file_ids.append(file_instance.id)
 
+        document = Documents.objects.filter(id=selectedDocument_id).first()
+
         pro = Provements.objects.create(
-            user=current_user, title=title, content=content)
+            user=current_user, title=title, content=content, document=document)
         if img_ids:
             pro.img_provements.add(*img_ids)
         if file_ids:
@@ -259,6 +264,7 @@ def provements_upload(request):
         userinfo.my_provements.add(pro)
 
         messages.success(request, '证据上传成功')
+
     return redirect('my-provements')
 
 
@@ -363,6 +369,17 @@ def test(request):
 # 案例库展示
 @login_required
 def documents(request):
+    # 创建五个 Documents 实例并保存到数据库
+    # documents = []
+    # for i in range(1, 6):
+    #     document = Documents.objects.create(
+    #         user=request.user,
+    #         title=f'Document {i}',
+    #         content=f'This is document {i} content.',
+    #         file=f'static/files/document_{i}.pdf'
+    #     )
+    #     documents.append(document)
+
     documents = Documents.objects.all()
 
     context = {

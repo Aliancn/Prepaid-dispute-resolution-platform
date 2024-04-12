@@ -10,93 +10,203 @@
 {% endblock %}
 
 {% block body %}
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock %}
 
 {% block content %}
 <section style="margin-top: 100px;">
+    <form role="form" id="contact-form" method="post" autocomplete="off" action="/provements_upload/" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="container py-4">
             <div class="row">
+                <div class="col-md-2" style="margin-top: 75px;">
+                    <div class="list-group" id="documentList">
+                    <a href="#" class="list-group-item list-group-item-action active">选择案例</a>
+                    {% for document in documents %}
+                        <a href="#" class="list-group-item list-group-item-action" data-document-id="{{ document.id }}">{{ document.title }}</a>
+                    {% endfor %}
+                    </div>
+                    <input type="hidden" id="selectedDocument" name="selected_document" value="default_value">
+                  </div>
                 <div class="col-lg-7 mx-auto d-flex justify-content-center flex-column">
                     <h3 class="text-center">取证固证</h3>
-                    <form role="form" id="contact-form" method="post" autocomplete="off" action="/provements_upload/" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>证据标题</label>
-                                    <div class="input-group mb-4">
-                                        <input class="form-control" name="title" placeholder="" aria-label="First Name..." type="text">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group mb-4">
-                                <label>证据内容</label>
-                                <textarea name="content" class="form-control" id="message" rows="4"></textarea>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-2">
-                                    <label>上传文件（点击加号选择多张图片）</label>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" style="margin-top: 15px;" onclick="addFileInput()">+</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" style="margin-top: 15px;" onclick="deleteFileInput()">-</button>
-                                </div>
-                            </div>
-                            <div class="row" id="fileInputsContainer">
-                                <div class="row">
-                                    <div class="col-md-12 mb-2">
-                                        <div class="row">
-                                            <div class="col-md-4 mb-2">
-                                                <div class="input-group">
-                                                    <input type="file" class="form-control" name="file_provements">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8 mb-2">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" name="file_info" placeholder="文件信息">    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>                                
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 mb-2">
-                                    <label>上传图片（点击加号选择多张图片）</label>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" style="margin-top: 15px;" onclick="addImgInput()">+</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" style="margin-top: 15px; " onclick="deleteImgInput()">-</button>
-                                </div>
-                            </div>
-                            <div class="row" id="imgInputsContainer">
-                                <div class="row">
-                                    <div class="col-md-12 mb-2">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <input type="file" class="form-control" name="img_provements">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" name="img_info" placeholder="图片信息">    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-check form-switch mb-4">
-                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked="">
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">我同意<a href="javascript:;" class="text-dark"><u>Terms and Conditions</u></a>.</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn bg-gradient-dark w-100">提交</button>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label style="font-size: 16px;">证据标题</label>
+                                <div class="input-group mb-4">
+                                    <input class="form-control" name="title" placeholder="" aria-label="First Name..." type="text">
                                 </div>
                             </div>
                         </div>
-                    </form>
+                        <div class="form-group mb-4">
+                            <label style="font-size: 16px;">证据内容</label>
+                            <textarea name="content" class="form-control" id="message" rows="4"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <label style="font-size: 16px;">上传文件（点击加号选择多张图片）</label>
+                                <button type="button" class="btn bg-gradient-default btn-sm" style="margin-top: 15px; font-size: 16px;" onclick="addFileInput()">+</button>
+                                <button type="button" class="btn bg-gradient-default btn-sm" style="margin-top: 15px; font-size: 16px;" onclick="deleteFileInput()">-</button>
+                            </div>
+                        </div>
+                        <div class="row" id="fileInputsContainer">
+                            <div class="row">
+                                <div class="col-md-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <div class="input-group">
+                                                <input type="file" class="form-control" name="file_provements" style="box-shadow: ">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 mb-2">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="file_info" placeholder="文件信息">    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-2">
+                                <label style="font-size: 16px;">上传图片（点击加号选择多张图片）</label>
+                                <button type="button" class="btn bg-gradient-default btn-sm" style="margin-top: 15px; font-size: 16px;" onclick="addImgInput()">+</button>
+                                <button type="button" class="btn bg-gradient-default btn-sm" style="margin-top: 15px; font-size: 16px;" onclick="deleteImgInput()">-</button>
+                            </div>
+                        </div>
+                        <div class="row" id="imgInputsContainer">
+                            <div class="row">
+                                <div class="col-md-12 mb-2">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input type="file" class="form-control" name="img_provements">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="img_info" placeholder="图片信息">    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-check form-switch mb-4">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked="" style="background-color: #cb0c9f; border-color: #cb0c9f;">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">我同意<a href="javascript:;" class="text-dark"><u>Terms and Conditions</u></a>.</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                {% comment %} <button type="submit" class="btn bg-gradient-dark w-100">提交</button> {% endcomment %}
+                                <!-- Button to trigger modal -->
+                                <button type="button" class="btn bg-gradient-primary w-100" id="modalButton" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    提交
+                                </button>
+                                
+                                <!-- Modal 1: Terms and Conditions not agreed -->
+                                <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel1">注意</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="py-3 text-center">
+                                                    <i class="ni ni-bell-55 ni-3x"></i>
+                                                    <h4 class="text-gradient text-danger mt-4">未同意条款和条件!</h4>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                                                </div>
+                                            
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Modal 2: Incomplete Title or Content -->
+                                <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel2">注意</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="py-3 text-center">
+                                                    <i class="ni ni-bell-55 ni-3x"></i>
+                                                    <h4 class="text-gradient text-danger mt-4">完善信息</h4>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal 3: Document not selected -->
+                                <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel3">注意</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="py-3 text-center">
+                                                    <i class="ni ni-bell-55 ni-3x"></i>
+                                                    <h4 class="text-gradient text-danger mt-4">你还没选择案例!</h4>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal 4: Confirm Submission -->
+                                <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel4">注意</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="py-3 text-center">
+                                                    <i class= "ni ni-air-baloon ni-3x"></i>
+                                                    <h4 class="text-gradient text-danger mt-4">确定提交!</h4>
+                                                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn bg-gradient-primary">确定</button>
+                                                <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">取消</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>           
                 </div>
             </div>
         </div>
@@ -106,15 +216,58 @@
 {% endblock %}
 
 {% block javascripts %}
-  <script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var documentList = document.getElementById('documentList');
+    var documentItems = documentList.getElementsByClassName('list-group-item');
+    
+    // 点击列表项时触发事件
+    for (var i = 1; i < documentItems.length; i++) {
+        documentItems[i].addEventListener('click', function() {
+        // 取消所有列表项的活动状态
+        for (var j = 1; j < documentItems.length; j++) {
+            documentItems[j].classList.remove('active');
+        }
+        // 将当前点击的列表项设置为活动状态
+        this.classList.add('active');
+        // 将所选文档的 ID 设置为表单的值
+        var selectedDocumentId = this.getAttribute('data-document-id');
+        document.getElementById('selectedDocument').value = selectedDocumentId;
+        });
+    }
+    
+    document.getElementById('modalButton').addEventListener('click', function() {
+        // 检查是否同意了条款和条件
+        var termsAgreed = document.getElementById('flexSwitchCheckDefault').checked;
+        // 检查标题和内容是否填写完整
+        var title = document.getElementsByName('title')[0].value.trim();
+        var content = document.getElementsByName('content')[0].value.trim();
+        var is_empty = title === '' || content === '';
+        var document_selected = document.getElementById('selectedDocument').value === 'default_value';
+        
+        if (!termsAgreed) {
+            $('#exampleModal1').modal('show'); // 显示模态框 1：未同意条款和条件
+        } else if (is_empty) {
+            $('#exampleModal2').modal('show'); // 显示模态框 2：标题或内容不完整
+        } else if (document_selected) {
+            $('#exampleModal3').modal('show'); // 显示模态框 3：案例未选择
+        } else {
+            $('#exampleModal4').modal('show'); // 显示模态框 4：确认提交
+        }
+    });
+    
+    
+    }); 
+    
     function addFileInput() {
-      var container = document.getElementById('fileInputsContainer')
-      if (container.childElementCount >= 5) {
+        var container = document.getElementById('fileInputsContainer')
+        if (container.childElementCount >= 5) {
         alert('最多上传5个文件')
     
         return
-      }
-      container.innerHTML += `
+        }
+        container.innerHTML += `
                                 <div class="row">
                                     <div class="col-md-12 mb-2">
                                         <div class="row">
@@ -133,13 +286,13 @@
                                 </div>`
     }
     function addImgInput() {
-      var container = document.getElementById('imgInputsContainer')
-      if (container.childElementCount >= 5) {
+        var container = document.getElementById('imgInputsContainer')
+        if (container.childElementCount >= 5) {
         alert('最多上传5个文件')
     
         return
-      }
-      container.innerHTML += `
+        }
+        container.innerHTML += `
                                 <div class="row">
                                     <div class="col-md-12 mb-2">
                                         <div class="row">
@@ -158,18 +311,18 @@
                                 </div>`
     }
     function deleteFileInput() {
-      var container = document.getElementById('fileInputsContainer')
-      if (container.childElementCount > 1) {
+        var container = document.getElementById('fileInputsContainer')
+        if (container.childElementCount > 1) {
         container.removeChild(container.lastChild.previousSibling)
         container.removeChild(container.lastChild)
-      }
+        }
     }
     function deleteImgInput() {
-      var container = document.getElementById('imgInputsContainer')
-      if (container.childElementCount > 1) {
+        var container = document.getElementById('imgInputsContainer')
+        if (container.childElementCount > 1) {
         container.removeChild(container.lastChild.previousSibling)
         container.removeChild(container.lastChild)
-      }
+        }
     }
-  </script>
+    </script>    
 {% endblock %}
