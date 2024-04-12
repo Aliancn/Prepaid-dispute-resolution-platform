@@ -10,9 +10,77 @@
 {% endblock %}
 
 {% block content %}
-
+<section style="margin-top: 75px;">
+    <div class="container py-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white py-4">
+                <div class="col-md-6 text-left">我的证据</div>
+            </div>
+            <div class="card-body pt-4">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input class="form-control datepicker" id="datePick" placeholder="点击选择上传日期" type="text">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input class="form-control" id="titleInput" placeholder="标题" type="text">
+                        </div>
+                    </div>  
+                    <div class="col-md-4">
+                        <button type="button" class="btn bg-gradient-primary w-auto me-1 mb-0" id="queryButton">查询</button>
+                    </div>
+                </div> 
+                <div class="table-responsive" >
+                    <table class="table align-items-center mb-0" id="provementTable" style="table-layout: fixed; width=100%">
+                        <thead> 
+                            <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 15%">标题</th>
+                            <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 40%">内容</th>
+                            <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 15%">上传时间</th>
+                            <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 15%">文件</th>
+                            <th class="text-secondary text-x font-weight-bolder opacity-7" style="width: 15%">图片</th>                      
+                        </thead>
+                        <tbody>
+                            {% for provement in my_provements %}
+                                <tr class="text-secondary text-x font-weight-bolder opacity-7">    
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ provement.title }}</td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ provement.content }}</td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ provement.upload_time|date:"Y-m-d" }}</td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;"><a href="{{ provement.file.url }}">{{ provement.file.name }}</a></td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;"><a href="{{ provement.file.url }}">{{ provement.file.name }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row justify-content-between py-2">
+                    <div class="col-lg-4">
+                        <ul class="pagination pagination-primary m-4" id="pagination">
+                            <li class="page-item disabled" id="previous-page">
+                                <a class="page-link" href="javascript:;" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="javascript:;">1</a>
+                            </li>
+                            <!-- Other page links will be dynamically added here -->
+                            <li class="page-item" id="next-page">
+                                <a class="page-link" href="javascript:;" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
 
 {% block javascripts %}
-
+<script src="{% static 'js/my-provements.js' %}"></script>
 {% endblock %}
+

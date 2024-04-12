@@ -11,7 +11,7 @@ class UserInfo(models.Model):
 
     avatar = models.ImageField(
         upload_to='static/images/avatar/', null=True, blank=True)
-    email = models.EmailField(max_length=100, unique=True)
+
 
     # 关联
     my_provements = models.ManyToManyField(

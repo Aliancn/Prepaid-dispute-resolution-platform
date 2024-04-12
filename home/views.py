@@ -213,10 +213,21 @@ def successfulCases(request, page_id=1):
     }
     return render(request, 'pages/successful-cases.html', context)
 
-
+@login_required
 def myProvements(request):
+    current_user = User.objects.get(username=request.user.username)
+    userInfo = UserInfo.objects.filter(user=current_user).first()
+    if not userInfo:
+        print("Creating new UserInfo for user:", current_user.username)
+        userInfo = UserInfo.objects.create(user=current_user)
+    else:
+        print("User already has UserInfo:", current_user.username)
+
+    my_provements = userInfo.my_provements.all()
+
     context = {
-        'segment': 'my-provements',
+        'segment': 'my_provements',
+        'my_provements': my_provements,
     }
     return render(request, 'pages/my-provements.html', context)
 
@@ -268,9 +279,7 @@ def provements_upload(request):
         userinfo.my_provements.add(pro)
 
         messages.success(request, '证据上传成功')
-        return redirect('my-provements')
-
-    return render(request, 'home.html')
+    return redirect('my-provements')
 
 
 # ai 智能分析
