@@ -33,7 +33,7 @@ def qianfan_pre_Yi_34B_Chat(ques):
     question += questionPre[0]
     question += "以下是我的案例：" + ques
     questionSet = [
-        "请回答以下问题:"    ,
+        "请回答以下问题:",
         "1. 维权需求所涉纠纷主要为? 例如: 预付式消费",
         "2. 本类型纠纷主要涵盖：.. 责任",
         "3. 根据上传信息能否知道本案涉案金额为多少",
@@ -42,7 +42,7 @@ def qianfan_pre_Yi_34B_Chat(ques):
         "6. 如果已经采取调解未果，可提供通过诉讼方式进一步维护自身合法权益"
     ]
     for q in questionSet:
-        question += q 
+        question += q
     resp = chat_comp.do(model="Yi-34B-Chat", messages=[{
         "role": "user",
         "content": question
@@ -69,4 +69,28 @@ def qianfan_liu_Yi_34B_Chat(question):
     resp = comp.do(model="ERNIE-Bot", prompt="你好", stream=True)
     for r in resp:
         print(r)
+    return resp
+
+
+def qianfan_withHistory_Yi_34B_Chat(question, history):
+    # history 的格式为 [{"role": "user", "content": "你好"}, {"role": "assistant", "content": "你好"}]
+    chat_comp = qianfan.ChatCompletion()
+    messages = []
+    for h in history:
+        if h['role'] == "user":
+            messages.append({
+                'role': "user",
+                'content': h['content']
+            })
+        if h['role'] == "assistant":
+            messages.append({
+                'role': "assistant",
+                'content': h['content']
+            })
+    messages.append({
+        "role": "user",
+        "content": question
+    })
+    resp = chat_comp.do(model="Yi-34B-Chat", messages=messages)
+    # resp.body -> json format dict
     return resp

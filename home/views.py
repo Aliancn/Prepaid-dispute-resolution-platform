@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 
-from utils.qianfanmodle import qianfan_Yi_34B_Chat, qianfan_pre_Yi_34B_Chat
+from utils.qianfanmodle import qianfan_Yi_34B_Chat, qianfan_pre_Yi_34B_Chat, qianfan_withHistory_Yi_34B_Chat
 
 # Create your views here.
 
@@ -101,7 +101,10 @@ def like(request, post_id=0):
 
 def postCaseDetails(request, post_id=0):
     # 展示详细post
-    post_details = Post.objects.get(id=post_id)
+    try:
+        post_details = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        post_details = Post.objects.first()
     title = post_details.title
     content = post_details.content
     user = post_details.user
@@ -189,7 +192,7 @@ def successfulCases(request, page_id=1):
             'like': '100'
         }
     ]
-    # 读取post 
+    # 读取post
     discussion = []
     postall = Post.objects.all()
     for post in postall:
@@ -214,6 +217,7 @@ def successfulCases(request, page_id=1):
 
     }
     return render(request, 'pages/successful-cases.html', context)
+
 
 @login_required
 def myProvements(request):
@@ -290,13 +294,15 @@ def provements_upload(request):
 
 # ai 智能分析
 class smartAnalysis(View):
-    @method_decorator(login_required)
-    def getHistory(self, user, topic):
-        history = []
-        if user.is_authenticated:
+    def getHistory(self, topic):
+        if not self.request.user.is_authenticated:
+            return []
+        if topic:
             topic_history = ChatItem.objects.filter(
-                user=user.id, topic=topic).order_by('-created_at')
-        return history
+                user=self.request.user, topic=topic).order_by('-created_at')
+        else:
+            topic_history = []
+        return topic_history
 
     # @method_decorator(login_required)
     def get(self, request):
@@ -322,15 +328,11 @@ class smartAnalysis(View):
                 },
             ]
         else:
+            topic_history = self.getHistory(topic)
             try:
                 topics = ChatRecord.objects.get(user=user.id).topic
             except ChatRecord.DoesNotExist:
                 topics = []
-            if topic:
-                topic_history = ChatItem.objects.filter(
-                    user=user.id, topic=topic).order_by('-created_at')
-            else:
-                topic_history = []
 
         context = {
             'segment': 'smart-analysis',
@@ -339,15 +341,30 @@ class smartAnalysis(View):
             'topic_now': topic if topic else '未选择',
         }
         return render(request, 'pages/smart-analysis.html', context)
+# @method_decorator(login_required)
 
     def post(self, request):
         # 登陆会保存历史信息，不登陆不会保存历史信息
         message = request.POST.get("message")
         topic = request.POST.get("topic")
-        # history = self.getHistory(request.user, topic)
+        history = self.getHistory(topic)
         if self.request.user.is_authenticated:
             # TODO : 上下文传输
-            response = qianfan_Yi_34B_Chat(message)
+            # response = qianfan_Yi_34B_Chat(message)
+            historylist = []
+            for h in history:
+                historylist.append({
+                    'role': 'user',
+                    'content': h.message
+                })
+                historylist.append({
+                    'role': 'assistant',
+                    'content': h.response
+                })
+            if historylist == []:
+                response = qianfan_pre_Yi_34B_Chat(message)
+            else:
+                response = qianfan_withHistory_Yi_34B_Chat(message, historylist)
             if topic:
                 chat_message = ChatItem(user=request.user, topic=topic,
                                         message=message, response=response.body['result'],
