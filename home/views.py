@@ -132,14 +132,14 @@ def postCaseDetails(request, post_id=0):
                 'user_avatar': '/media/static/images/avatar/1.png',
                 'user_name': '张三',
                 'post_time': '2023-07-01',
-                'comment_content': '评论内容',
+                'content': '评论内容, elitrat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.',
             },
             {
                 'comment_id': 0,
                 'user_avatar': '/media/static/images/avatar/1.png',
                 'user_name': '张三',
                 'post_time': '2023-07-01',
-                'comment_content': '评论内容',
+                'content': '评论内容, elitrat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.',
             }
         ]
     }

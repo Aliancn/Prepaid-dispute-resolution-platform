@@ -13,79 +13,82 @@
   <section style="margin-top: 100px;">
     <div class="container">
       <div class="row py-4">
-        {% comment %}left{% endcomment %}
-        <div class="col-lg-2">
-          <img src="{{ cover }}" alt="Image" class="img-fluid rounded" />
-        </div>
-        {% comment %}mid{% endcomment %}
-        {% comment %}内容{% endcomment %}
-        <div class="col-lg-6" style="padding-left: 20px;">
-          {% comment %}content{% endcomment %}
+        <div class="col-lg-8">
           <div class="row">
-            <h2 class="display-4 text-dark">{{ title }}</h2>
-            <div class="d-flex align-items-center">
-              <i class="ni ni-favourite-28 me-2" aria-hidden="true"></i>
-              <span id="like">{{ like }}</span>
-            </div>
-
-            <div class="author align-items-center d-flex justify-content-end" style="margin-top: 10px;">
-              <img src="{{ user_avatar }}" alt="..." class="avatar shadow" />
-              <div class="name ps-3">
-                <span>{{ user_name }}</span>
-                <div class="stats">
-                  <small>Posted on {{ post_time }}</small>
-                </div>
+            
+          {% comment %}left{% endcomment %}
+          <div class="col-lg-3">
+            <img src="{{ cover }}" alt="Image" class="img-fluid rounded" />
+          </div>
+          {% comment %}mid{% endcomment %}
+          {% comment %}内容{% endcomment %}
+          <div class="col-lg-9" style="padding-left: 20px;">
+            {% comment %}content{% endcomment %}
+            <div class="row">
+              <h2 class="display-4 text-dark">{{ title }}</h2>
+              <div class="d-flex align-items-center">
+                <i class="ni ni-favourite-28 me-2" aria-hidden="true"></i>
+                <span id="like">{{ like }}</span>
               </div>
-            </div>
-            <h5 class="text-dark text-gradient" style="margin-top: 30px;">{{ content }}</h5>
-            <a href="javascript:like();" class="d-flex justify-content-end align-items-end">
-              <button type="button" class="btn sm-gradient-white w-auto">
-                <div class="d-flex align-items-center">
-                  <i class="ni ni-favourite-28 me-2" aria-hidden="true"></i>
-                  LIKE
-                </div>
-              </button>
-            </a>
-          </div>
 
-          {% comment %}button{% endcomment %}
-          <div class="row py-4">
-            <div class="col-4">
-              {% if post_id > 0 %}
-                <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'post-details' {{ post_id|add:'-1' }} %}'">上一个</button>
-              {% endif %}
-            </div>
-            <div class="col"></div>
-            <div class="col-4">
-              <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'post-details' {{ post_id|add:'1' }} %}'">下一个</button>
-            </div>
-          </div>
-        </div>
-        {% comment %}评论{% endcomment %}
-        <div class="col-lg-6" style="padding-left: 20px;">
-          {% comment %}content{% endcomment %}
-
-          <ul class="list-group">
-            
-            
-          
-          {% for com in comments %}
-          <li class="list-group-item">
-            
               <div class="author align-items-center d-flex justify-content-end" style="margin-top: 10px;">
-                <img src="{{ com.user_avatar }}" alt="..." class="avatar shadow" />
+                <img src="{{ user_avatar }}" alt="..." class="avatar shadow" />
                 <div class="name ps-3">
-                  <span>{{ com.user_name }}</span>
+                  <span>{{ user_name }}</span>
                   <div class="stats">
-                    <small>Posted on {{ com.post_time }}</small>
+                    <small>Posted on {{ post_time }}</small>
                   </div>
                 </div>
               </div>
-              <h5 class="text-dark text-gradient" style="margin-top: 30px;">{{ com.content }}</h5>
-            </li>
-          {% endfor %}
-        </ul>
+              <h5 class="text-dark text-gradient" style="margin-top: 30px;">{{ content }}</h5>
+              <a href="javascript:like();" class="d-flex justify-content-end align-items-end">
+                <button type="button" class="btn sm-gradient-white w-auto">
+                  <div class="d-flex align-items-center">
+                    <i class="ni ni-favourite-28 me-2" aria-hidden="true"></i>
+                    LIKE
+                  </div>
+                </button>
+              </a>
+            </div>
+
+            {% comment %}button{% endcomment %}
+            <div class="row py-4">
+              <div class="col-4">
+                {% if post_id > 0 %}
+                  <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'post-details' post_id|add:'-1' %}'">上一个</button>
+                {% endif %}
+              </div>
+              <div class="col"></div>
+              <div class="col-4">
+                <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'post-details' post_id|add:'1' %}'">下一个</button>
+              </div>
+            </div>
+          </div>
+
+          </div>
+          
+            {% comment %}评论{% endcomment %}
+            <div class="row">
+              <ul class="list-group">
+                {% for com in comments %}
+                  <li class="list-group-item">
+                    <div class="author align-items-center d-flex " style="margin-top: 10px;">
+                      <img src="{{ com.user_avatar }}" alt="..." class="avatar shadow" />
+                      <div class="name ps-3">
+                        <span>{{ com.user_name }}</span>
+                        <div class="stats">
+                          <small>Posted on {{ com.post_time }}</small>
+                        </div>
+                      </div>
+                    </div>
+                    <h5 class="text-dark text-gradient" style="margin-top: 30px;">{{ com.content }}</h5>
+                  </li>
+                {% endfor %}
+              </ul>
+           
+          </div>
         </div>
+
         {% comment %}right{% endcomment %}
         <div class="col-1"></div>
         <div class="col-3">
