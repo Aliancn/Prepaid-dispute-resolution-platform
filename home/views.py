@@ -34,7 +34,10 @@ def home(request):
 
 @login_required
 def disputeCases(request):
-    documents = Documents.objects.all()
+    try:
+        documents = Documents.objects.all()
+    except Documents.DoesNotExist:
+        documents = []
     context = {
         'segment': 'dispute-cases',
         'documents': documents,
@@ -123,6 +126,22 @@ def postCaseDetails(request, post_id=0):
         'cover': cover.url,
         'post_time': post_time,
         'like': like,
+        'comments': [
+            {
+                'comment_id': 0,
+                'user_avatar': '/media/static/images/avatar/1.png',
+                'user_name': '张三',
+                'post_time': '2023-07-01',
+                'comment_content': '评论内容',
+            },
+            {
+                'comment_id': 0,
+                'user_avatar': '/media/static/images/avatar/1.png',
+                'user_name': '张三',
+                'post_time': '2023-07-01',
+                'comment_content': '评论内容',
+            }
+        ]
     }
     return render(request, 'pages/post-details.html', context)
 
@@ -364,15 +383,21 @@ class smartAnalysis(View):
             if historylist == []:
                 response = qianfan_pre_Yi_34B_Chat(message)
             else:
-                response = qianfan_withHistory_Yi_34B_Chat(message, historylist)
+                if "案例" in message:
+                    print("案例")
+                    response = qianfan_pre_Yi_34B_Chat(message)
+                else:
+                    print("有历史信息")
+                    response = qianfan_withHistory_Yi_34B_Chat(
+                        message, historylist)
             if topic:
                 chat_message = ChatItem(user=request.user, topic=topic,
                                         message=message, response=response.body['result'],
                                         created_at=datetime.datetime.now())
                 chat_message.save()
         else:
+            print("未登录询问")
             response = qianfan_pre_Yi_34B_Chat(message)
-            # response = qianfan_Yi_34B_Chat(message)
         response = response.body['result']
         return JsonResponse({"message": message, "response": response})
 
@@ -419,9 +444,10 @@ def documents(request):
     #         file=f'static/files/document_{i}.pdf'
     #     )
     #     documents.append(document)
-
-    documents = Documents.objects.all()
-
+    try:
+        documents = Documents.objects.all()
+    except Documents.DoesNotExist:
+        documents = []
     context = {
         'segment': 'documents',
         'documents': documents,
