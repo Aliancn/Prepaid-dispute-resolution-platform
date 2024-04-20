@@ -19,7 +19,7 @@
       <div class="row">
         <div class="col-md-2">
           <div class="list-group">
-            <a href="#" class="list-group-item list-group-item-action active">Topic</a>
+            <a href="#" class="list-group-item list-group-item-action "style="background-color: lightgray;">Topic</a>
             <a href="{% url 'smart-analysis' %}?topic={{ topic }}" class="list-group-item list-group-item-action" >topic 1</a>
             {% for topic in topics %}
               {% if topic == topic_now %}
@@ -70,7 +70,7 @@
             {% csrf_token %}
             <div class="input-group mb-3">
               <input type="text" class="form-control" placeholder="请描述你遇见的问题..." id="form-input" />
-              <button class="btn btn-primary mb-0" type="submit">发送</button>
+              <button class="btn btn-info mb-0" type="submit">发送</button>
             </div>
           </form>
         </div>

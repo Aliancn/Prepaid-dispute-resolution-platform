@@ -113,7 +113,7 @@
                         <div class="card-body pt-2 mx-3 mt-3 position-relative z-index-0 row">
                           {% if item.cover %}
                             <div class="col-2">
-                              <a href="{% url 'post-details' item.post_id %}" class="d-block"><img src=" {{ item.cover }}" class="img-fluid border-radius-md" /></a>
+                              <a href="{% url 'post-details'  item.post_id %}" class="d-block"><img src=" {{ item.cover }}" class="img-fluid border-radius-md" /></a>
                             </div>
                           {% endif %}
                           <div class="col">
@@ -148,7 +148,7 @@
           {% comment %}list{% endcomment %}
           <div class="row">
             <ul class="list-group position-relative end-0">
-              <a href="#" class="list-group-item list-group-item-action active">主题</a>
+              <a href="#" class="list-group-item list-group-item-action" style="background-color: lightgray;">主题</a>
               <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
               <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
               <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
@@ -158,7 +158,7 @@
           {% comment %}button{% endcomment %}
           <div class="row" style="margin-top: 30px;">
             <div class="d-flex justify-content-center">
-              <a href="{% url 'post-case' %}" class="btn btn-primary btn-lg">发表讨论</a>
+              <a href="{% url 'post-case' %}" class="btn btn-info btn-lg">发表讨论</a>
             </div>
           </div>
         </div>
@@ -170,24 +170,24 @@
     <div class="container">
       <div class="row justify-space-between py-2">
         <div class="col-lg-4 mx-auto">
-          <ul class="pagination pagination-primary m-4">
+          <ul class="pagination pagination-info m-4">
             <li class="page-item">
-              <a class="page-link" href="{% url 'successful-cases' page_id|add:'-1' %}" aria-label="Previous"><span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i></span></a>
+              <a class="page-link" href="{% url 'successful-cases' page_id|add:'-1'  %}" aria-label="Previous"><span aria-hidden="true"><i class="fa fa-angle-double-left" aria-hidden="true"></i></span></a>
             </li>
             <li class="page-item active">
               <a class="page-link" href="javascript:;">{{ page_id }}</a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="{% url 'successful-cases' page_id|add:'1' %}">{{ page_id|add:'1' }}</a>
+              <a class="page-link" href="{% url 'successful-cases' page_id|add:'1'  %}">{{ page_id|add:'1' }}</a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="{% url 'successful-cases' page_id|add:'2' %}">{{ page_id|add:'2' }}</a>
+              <a class="page-link" href="{% url 'successful-cases'  page_id|add:'2' %}">{{ page_id|add:'2' }}</a>
             </li>
             <li class="page-item">
               <a class="page-link" href="{% url 'successful-cases' page_id|add:'3' %}">{{ page_id|add:'3' }}</a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="{% url 'successful-cases' page_id|add:'4' %}">{{ page_id|add:'4' }}</a>
+              <a class="page-link" href="{% url 'successful-cases'  page_id|add:'4' %}">{{ page_id|add:'4' }}</a>
             </li>
             <li class="page-item">
               <a class="page-link" href="{% url 'successful-cases' page_id|add:'5' %}" aria-label="Next"><span aria-hidden="true"><i class="fa fa-angle-double-right" aria-hidden="true"></i></span></a>
