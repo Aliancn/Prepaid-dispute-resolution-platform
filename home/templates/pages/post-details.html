@@ -65,10 +65,68 @@
             </div>
           </div>
 
-          </div>
-          
-            {% comment %}评论{% endcomment %}
+          </div>  
             <div class="row">
+              {% comment %}发表讨论{% endcomment %}
+              <form method="post" id="comment_form" autocomplete="off" action="/comments_upload/">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" name="content" placeholder="发表评论">
+                  <button type="button" class="btn bg-gradient-info mb-0" id="modalButton">发送</button>
+                </div>
+                <input type="hidden" id="post_id" name="post_id" value="{{post_id}}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              
+              
+                <!-- Modal 1: Incomplete content -->
+                <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">注意</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="py-3 text-center">
+                                    <i class="ni ni-bell-55 ni-3x"></i>
+                                    <h4 class="text-gradient text-danger mt-4">未输入内容!</h4>
+                                    <p>请输入有效内容后提交</p>
+                                </div>   
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal 2: Confirm Submission -->
+                <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel2">注意</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                          </div>
+                          <div class="modal-body">
+                              <div class="py-3 text-center">
+                                  <i class= "ni ni-air-baloon ni-3x"></i>
+                                  <h4 class="text-gradient text-danger mt-4">确定发送!</h4>
+                                  <p></p>
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="submit" form="comment_form" class="btn bg-gradient-info">确定</button>
+                              <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">关闭</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </form>
+              {% comment %}评论区{% endcomment %}
               <ul class="list-group">
                 {% for com in comments %}
                   <li class="list-group-item">
@@ -95,7 +153,7 @@
           {% comment %}list{% endcomment %}
           <div class="row">
             <ul class="list-group position-relative end-0">
-              <a href="#" class="list-group-item list-group-item-action active">主题</a>
+              <a href="#" class="list-group-item list-group-item-action" style="background: lightgray ">主题</a>
               <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
               <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
               <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
@@ -115,6 +173,7 @@
 {% endblock %}
 
 {% block javascripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     function like() {
       axios
@@ -128,5 +187,18 @@
           console.log(error)
         })
     }
+
+    document.getElementById('modalButton').addEventListener('click', function() {
+
+      var content = document.getElementsByName('content')[0].value.trim();
+      var is_empty = content === '';
+      
+      
+      if (is_empty) {
+          $('#exampleModal1').modal('show'); // 显示模态框 1：未输入内容
+      }  else {
+          $('#exampleModal2').modal('show'); // 显示模态框 2：确认提交
+      }
+  });
   </script>
 {% endblock %}

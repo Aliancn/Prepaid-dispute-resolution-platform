@@ -24,6 +24,10 @@ urlpatterns = [
     path('post_upload/', views.post_upload, name='post_upload'),
     path('test/', views.test, name='test'),
     path('documents/', views.documents, name='documents'),
+    path('my-posts/', views.myPosts, name='my-posts'),
+    path('documents_create/', views.documents_create, name='documents_create'),
+    path('comments_upload/', views.comments_upload, name='comments_upload'), 
+
 ]
 
 if settings.DEBUG:

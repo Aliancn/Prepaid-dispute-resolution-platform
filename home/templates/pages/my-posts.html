@@ -1,0 +1,70 @@
+{% extends 'layouts/law-base-sections.html' %}
+{% load static %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+
+{% endblock %}
+
+{% block content %}
+<section style="margin-top: 100px;">
+    <div class="container py-4">
+        <div class="row">
+            {% comment %}left{% endcomment %}
+            <div class="col-8">
+                {% comment %}list{% endcomment %}
+                <div class="row" style="margin-top: 30px;">
+                    <div class="tab-content">
+                        <div id="hot-tabs-simple" class="tab-pane fade show active">
+                            <ul class="list-group">
+                                {% for item in discussion %}
+                                    <li class="list-group-item">
+                                        <div class="card">
+                                            <div class="card-body pt-2 mx-3 mt-3 position-relative z-index-0 row">
+                                                {% if item.cover %}
+                                                    <div class="col-2">
+                                                        <a href="{% url 'post-details' item.post_id %}" class="d-block"><img src=" {{ item.cover }}" class="img-fluid border-radius-md" /></a>
+                                                        {% if item.published_status == 1 %}
+                                                            <span class="badge bg-gradient-success" style="margin-top: 30px; margin-left: 10px">成功发布</span>
+                                                        {% elif item.published_status == 2 %}
+                                                            <span class="badge bg-gradient-danger" style="margin-top: 30px; margin-left: 10px">审核不通过</span>
+                                                        {% else%} 
+                                                            <span class="badge bg-gradient-info" style="margin-top: 30px; margin-left: 10px">审核中</span>
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
+                                                <div class="col">
+                                                    <a href="{% url 'post-details' item.post_id %}" class="card-title h5 d-block text-darker">{{ item.title }}</a>
+                                                    <p class="card-description mb-4">{{ item.content }}</p>
+                                                    <div class="d-flex align-items-center">
+                                                        <i class="ni ni-favourite-28 me-2" aria-hidden="true"></i>
+                                                        <span id="like">{{ item.like }}</span>
+                                                    </div>
+                                                    <div class="author align-items-center d-flex justify-content-end" style="margin-top: 10px;">
+                                                        <img src="{{ item.avatar }}" alt="..." class="avatar shadow" />
+                                                        <div class="name ps-3">
+                                                            <span>{{ item.username }}</span>
+                                                            <div class="stats">
+                                                                <small>Posted on {{ item.date }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+{% endblock %}
+

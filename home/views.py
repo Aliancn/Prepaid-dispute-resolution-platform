@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.views import View
 
-from home.models import ChatItem, ChatRecord, Image, Provements, UserInfo, Post, Documents, Image, File, User
+from home.models import ChatItem, ChatRecord, Image, Provements, UserInfo, Post, Documents, Image, File, User, Comments
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -85,8 +85,7 @@ def post_upload(request):
         userinfo.my_posts.add(post)
 
         messages.success(request, '帖子发表成功')
-        return redirect('/home')
-        # 重定向逻辑未写
+        return redirect('my-posts')
 
     return render(request, 'home.html')
 
@@ -116,6 +115,43 @@ def postCaseDetails(request, post_id=0):
     post_time = post_details.post_time
     like = post_details.like
 
+    try :
+        comments = post_details.comments.all()
+    except Comments.DoesNotExist:
+        comments = []
+    
+    comments_list = []
+    for comment in comments:
+        comments_list.append({
+            'comment_id': comment.id,
+            'user_avatar': comment.user.userinfo.avatar.url if comment.user.userinfo.avatar else '/media/static/images/avatar/1.png',
+            'user_name': comment.user.username,
+            'post_time': comment.post_time,
+            'content': comment.content,
+        })
+    
+    comments_example = [
+        {
+            'comment_id': 0,
+            'user_avatar': '/media/static/images/avatar/1.png',
+            'user_name': '张三',
+            'post_time': '2023-07-01',
+            'content': '评论内容, elitrat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.',
+        },
+        {
+            'comment_id': 0,
+            'user_avatar': '/media/static/images/avatar/1.png',
+            'user_name': '张三',
+            'post_time': '2023-07-01',
+            'content': '评论内容, elitrat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.',
+        }    
+    ]
+    comments_list.sort(key=lambda x: x['post_time'], reverse=True)
+    comments_list = comments_list + comments_example
+    
+
+
+
     context = {
         'segment': 'post-details',
         'post_id': post_id,
@@ -126,22 +162,7 @@ def postCaseDetails(request, post_id=0):
         'cover': cover.url,
         'post_time': post_time,
         'like': like,
-        'comments': [
-            {
-                'comment_id': 0,
-                'user_avatar': '/media/static/images/avatar/1.png',
-                'user_name': '张三',
-                'post_time': '2023-07-01',
-                'content': '评论内容, elitrat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.',
-            },
-            {
-                'comment_id': 0,
-                'user_avatar': '/media/static/images/avatar/1.png',
-                'user_name': '张三',
-                'post_time': '2023-07-01',
-                'content': '评论内容, elitrat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.',
-            }
-        ]
+        'comments': comments_list,
     }
     return render(request, 'pages/post-details.html', context)
 
@@ -461,3 +482,67 @@ def documents(request):
         'documents': documents,
     }
     return render(request, 'pages/documents.html', context)
+
+# 我的帖子
+
+@login_required
+def myPosts(request):
+    current_user = User.objects.get(username=request.user.username)
+    userinfo = UserInfo.objects.filter(user=current_user).first()
+    if not userinfo:
+        userinfo = UserInfo.objects.create(user=current_user)
+
+    try:
+        my_posts = userinfo.my_posts.all()
+    except Post.DoesNotExist:
+        my_posts = []
+
+    discussion = []
+    for post in my_posts:
+        discussion.append({
+            'post_id': post.id,
+            'cover': post.cover.url if post.cover else '',
+            'title': post.title,
+            'content':  post.content,
+            'avatar': userinfo.avatar.url if userinfo.avatar else '',
+            'username': userinfo.user.username,
+            'date': post.post_time,
+            'like': post.like
+        })
+
+    context = {
+        'segment': 'myposts',
+        'discussion': discussion,
+    }
+
+
+    return render(request, 'pages/my-posts.html', context)
+
+@login_required
+def documents_create(request):
+    if request.method == 'POST':
+        print('创建案例')
+        title = request.POST.get('title_document')
+        content = request.POST.get('content_document')
+    
+    document = Documents.objects.create(
+         title=title, content=content)
+    
+    document.save()
+ 
+    return redirect('dispute-list')
+
+@login_required
+def comments_upload(request):
+    if request.method == 'POST':
+        current_user = User.objects.get(username=request.user.username)
+        post_id = request.POST.get('post_id')
+        content = request.POST.get('content')
+
+        post = Post.objects.get(id=post_id)
+        comment = Comments.objects.create(
+            user=current_user, post=post, content=content)
+        
+        comment.save()
+
+        return redirect('post-details', post_id=post_id)
