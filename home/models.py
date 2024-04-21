@@ -51,6 +51,8 @@ class Post (models.Model):
         upload_to='static/images/covers/', null=True, blank=True)
     post_time = models.DateTimeField(auto_now_add=True)
     like = models.IntegerField(default=0)
+    published_status = models.IntegerField(default=0, blank=True, null=True)
+
 
     def __str__(self):
         return self.title
@@ -111,3 +113,14 @@ class ChatRecord(models.Model):
 
     def __str__(self):
         return f"{self.user.username}"
+
+class Comments(models.Model):
+    # 评论model
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    content = models.TextField()
+    post_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.content
