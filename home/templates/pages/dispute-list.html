@@ -27,10 +27,10 @@
                     {% endfor %}
                     </div>
                     
-                    <!-- Button trigger modal -->
+                    {% comment %} <!-- Button trigger modal -->
                     <button type="button" class="btn bg-gradient-default btn-block mb-3" data-bs-toggle="modal" data-bs-target="#exampleModalMessage" style="margin-top: 15px;">
                         创建案例
-                    </button>                     
+                    </button>                      {% endcomment %}
                       
                     <input type="hidden" id="selectedDocument" name="selected_document" value="default_value">
                 </div>
@@ -415,7 +415,7 @@
             </div>
         </div>
     </form>
-    <!-- Modal -->
+    {% comment %} <!-- Modal -->
     <div class="modal fade" id="exampleModalMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalMessageTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -444,7 +444,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> {% endcomment %}
 </section>
 
 

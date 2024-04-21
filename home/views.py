@@ -514,12 +514,11 @@ def myPosts(request):
 def documents_create(request):
     if request.method == 'POST':
         print('创建案例')
-        current_user = User.objects.get(username=request.user.username)
         title = request.POST.get('title_document')
         content = request.POST.get('content_document')
     
     document = Documents.objects.create(
-        user=current_user, title=title, content=content)
+         title=title, content=content)
     
     document.save()
  
