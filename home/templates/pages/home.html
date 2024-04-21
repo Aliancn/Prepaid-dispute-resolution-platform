@@ -23,7 +23,7 @@
             <h1 class="mb-4">一站式平台</h1>
             <p class="lead pe-5 me-5">一项针对当前消费市场中消费纠纷所遭遇的维权挑战而精心打造的综合性在线服务平台</p>
             <div class="buttons">
-              <button type="button" class="btn bg-gradient-info mt-4" href="{% url "successful-cases" 1 %}">Get Started</button>
+              <a type="button" class="btn bg-gradient-info mt-4" href="{% url 'successful-cases' 1 %}">Get Started</a>
               <button type="button" class="btn text-info shadow-none mt-4">Read more</button>
             </div>
           </div>
@@ -212,7 +212,151 @@
                 </svg>
               </div>
               <h2 class="text-white up mb-0">预付式纠纷 <br /> 一站式解决</h2>
-              <a href="{% url 'buttons' %}" target="_blank" class="btn btn-outline-white mt-5 up btn-round" style="width: 100%;height: 200%;">Start with us</a>
+              <a href="" target="_blank" class="btn btn-outline-white mt-5 up btn-round" style="width: 100%;height: 200%;">Start with us</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="container">
+          <div class="row my-5">
+            <div class="col-md-6 mx-auto text-center">
+              <h2>Frequently Asked Questions</h2>
+              <p>Ignorance of the law excuses no man. - John Selden</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-10 mx-auto">
+              <div class="accordion" id="accordionRental">
+                <div class="accordion-item mb-3">
+                  <h5 class="accordion-header" id="headingOne">
+                    <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                      <h3>我如何开始使用权易保消费者智能维权平台？</h3>
+                      <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                      <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                    </button>
+                  </h5>
+                  <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionRental" style="">
+                    <div class="accordion-body text-sm opacity-8">
+                      <p style="color: black; font-size: 20px;">  
+                        首先，您需要在我们的平台上注册一个账户。然后，您可以轻松上传您的合同、交易记录以及其他相关证据材料。我们的人工智能技术将帮助您分析这些材料并为您提供个性化的维权策略。
+                      </p>
+                      </div>
+                  </div>
+                </div>
+                <div class="accordion-item mb-3">
+                  <h5 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button border-bottom font-weight-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      <h3>我能在平台上获得什么样的法律支持？</h3>
+                      <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                      <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                    </button>
+                  </h5>
+                  <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionRental">
+                    <div class="accordion-body text-sm opacity-8">
+                      <p style="color: black; font-size: 20px;">  
+                        我们提供一系列法律服务，包括法律咨询、证据整理、文书起草以及法律代理等。我们的专业律师团队将为您提供一对一的法律支持，确保您的权益得到有效维护。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item mb-3">
+                  <h5 class="accordion-header" id="headingThree">
+                    <button class="accordion-button border-bottom font-weight-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      <h3>我的个人信息在使用平台时会受到保护吗？</h3>
+                      <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                      <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                    </button>
+                  </h5>
+                  <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionRental">
+                    <div class="accordion-body text-sm opacity-8">
+                      <p style="color: black; font-size: 20px;">  
+                        是的，我们的平台致力于提供高效的在线维权服务。一旦您提交维权请求，我们将尽快为您提供反馈并制定相应的维权策略。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item mb-3">
+                  <h5 class="accordion-header" id="headingFour">
+                    <button class="accordion-button border-bottom font-weight-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                      <h3>我的维权请求会得到及时响应吗？</h3>
+                      <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                      <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                    </button>
+                  </h5>
+                  <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionRental">
+                    <div class="accordion-body text-sm opacity-8">
+                      <p style="color: black; font-size: 20px;">  
+                        是的，我们的平台致力于提供高效的在线维权服务。一旦您提交维权请求，我们将尽快为您提供反馈并制定相应的维权策略。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item mb-3">
+                  <h5 class="accordion-header" id="headingFifth">
+                    <button class="accordion-button border-bottom font-weight-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFifth" aria-expanded="false" aria-controls="collapseFifth">
+                      <h3>我需要支付使用平台的费用吗？</h3>
+                      <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                      <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                    </button>
+                  </h5>
+                  <div id="collapseFifth" class="accordion-collapse collapse" aria-labelledby="headingFifth" data-bs-parent="#accordionRental">
+                    <div class="accordion-body text-sm opacity-8">
+                      <p style="color: black; font-size: 20px;">  
+                        我们的平台是免费注册的，但一些高级法律服务可能会收取费用。您可以在提交维权请求之前了解清楚相关费用信息。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item mb-3">
+                  <h5 class="accordion-header" id="headingSixth">
+                    <button class="accordion-button border-bottom font-weight-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSixth" aria-expanded="false" aria-controls="collapseFifth">
+                      <h3>如果我对服务不满意，可以获得退款吗？</h3>
+                      <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                      <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                    </button>
+                  </h5>
+                  <div id="collapseSixth" class="accordion-collapse collapse" aria-labelledby="headingSixth" data-bs-parent="#accordionRental">
+                    <div class="accordion-body text-sm opacity-8">
+                      <p style="color: black; font-size: 20px;">  
+                        如果您对我们的服务不满意，可以联系我们的客服团队进行投诉和退款申请。我们将尽力解决您的问题并提供满意的解决方案。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item mb-3">
+                  <h5 class="accordion-header" id="headingSeventh">
+                    <button class="accordion-button border-bottom font-weight-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeventh" aria-expanded="false" aria-controls="collapseFifth">
+                      <h3>我可以信任平台提供的维权策略吗？</h3>
+                      <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                      <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                    </button>
+                  </h5>
+                  <div id="collapseSeventh" class="accordion-collapse collapse" aria-labelledby="headingSeventh" data-bs-parent="#accordionRental">
+                    <div class="accordion-body text-sm opacity-8">
+                      <p style="color: black; font-size: 20px;">  
+                        是的，我们的维权策略是基于尖端的人工智能技术和自动化数据分析的结果，并由专业律师团队审核和提供支持。因此，您可以信任我们的维权策略，并相信我们将为您提供最佳的维权方案。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item mb-3">
+                  <h5 class="accordion-header" id="headingEighth">
+                    <button class="accordion-button border-bottom font-weight-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEighth" aria-expanded="false" aria-controls="collapseFifth">
+                      <h3>平台可以处理哪些类型的维权事项？</h3>
+                      <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                      <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                    </button>
+                  </h5>
+                  <div id="collapseEighth" class="accordion-collapse collapse" aria-labelledby="headingEighth" data-bs-parent="#accordionRental">
+                    <div class="accordion-body text-sm opacity-8">
+                      <p style="color: black; font-size: 20px;">  
+                        我们的平台可以处理各种消费者维权事项，包括但不限于商家违约、服务质量下降、产品质量问题以及企业停业等。无论您遇到何种问题，我们都将为您提供专业的维权服务。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

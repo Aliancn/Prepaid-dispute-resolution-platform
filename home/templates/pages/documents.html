@@ -46,7 +46,11 @@
                                     <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.title }}</td>
                                     <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.content }}</td>
                                     <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.update_time|date:"Y-m-d" }}</td>
-                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;"><a href="{{ document.file.url }}">{{ document.file.name }}</a></td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">
+                                        {% if document.file %}
+                                            <a href="{{ document.file.url }}" download>{{ document.file.name }}</a>
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
