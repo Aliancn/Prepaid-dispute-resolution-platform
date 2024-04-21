@@ -21,10 +21,10 @@
             <div class="row">
                 <div class="col-md-2" style="margin-top: 75px;">
                     <div class="list-group" id="documentList">
-                        <a href="#" class="list-group-item list-group-item-action active">选择案例</a>
-                        {% for document in documents %}
-                            <a href="#" class="list-group-item list-group-item-action" data-document-id="{{ document.id }}">{{ document.title }}</a>
-                        {% endfor %}
+                    <a href="#" class="list-group-item list-group-item-action" style="background-color: lightgray;">选择案例</a>
+                    {% for document in documents %}
+                        <a href="#" class="list-group-item list-group-item-action" data-document-id="{{ document.id }}">{{ document.title }}</a>
+                    {% endfor %}
                     </div>
                     
                     <!-- Button trigger modal -->
@@ -308,7 +308,7 @@
                             <div class="col-md-12">
                                 {% comment %} <button type="submit" class="btn bg-gradient-dark w-100">提交</button> {% endcomment %}
                                 <!-- Button to trigger modal -->
-                                <button type="button" class="btn bg-gradient-primary w-100" id="modalButton" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <button type="button" class="btn bg-gradient-info w-100" id="modalButton" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     提交
                                 </button>
                                 
@@ -402,7 +402,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" form="contact-form" class="btn bg-gradient-primary">确定</button>
+                                                <button type="submit" form="contact-form" class="btn bg-gradient-info">确定</button>
                                                 <button type="button" class="btn btn-link  ml-auto" data-bs-dismiss="modal">取消</button>
                                             </div>
                                         </div>
