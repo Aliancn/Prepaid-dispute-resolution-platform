@@ -402,8 +402,15 @@ class smartAnalysis(View):
                     'content': h.response
                 })
             if historylist == []:
-                response = qianfan_pre_Yi_34B_Chat(message)
+                print("无历史信息")
+                if "案例" in message:
+                    print("案例")
+                    response = qianfan_pre_Yi_34B_Chat(message)
+                else:
+                    response = qianfan_withHistory_Yi_34B_Chat(
+                        message, historylist)
             else:
+                print("有历史信息")
                 if "案例" in message:
                     print("案例")
                     response = qianfan_pre_Yi_34B_Chat(message)
@@ -418,7 +425,8 @@ class smartAnalysis(View):
                 chat_message.save()
         else:
             print("未登录询问")
-            response = qianfan_pre_Yi_34B_Chat(message)
+            historylist = []
+            response = qianfan_withHistory_Yi_34B_Chat(message, historylist)
         response = response.body['result']
         return JsonResponse({"message": message, "response": response})
 
