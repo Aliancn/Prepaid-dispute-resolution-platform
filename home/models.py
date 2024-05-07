@@ -10,7 +10,7 @@ class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     avatar = models.ImageField(
-        upload_to='static/images/avatar/', null=True, blank=True)
+        upload_to='static/images/avatar/', null=True, blank=True, default='static/images/avatar/1.png')
 
 
     # 关联
@@ -27,7 +27,6 @@ class Provements(models.Model):
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    document = models.ForeignKey('Documents', on_delete=models.CASCADE)
     # provement = models.ImageField(upload_to='static/provements/', null=True, blank=True)
     file_provements = models.ManyToManyField(
         'File', related_name='file_provements')

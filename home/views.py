@@ -290,7 +290,7 @@ def provements_upload(request):
         file_info = request.POST.getlist('file_info')
         img_info = request.POST.getlist('img_info')
         selectedDocument_id = request.POST.get('selected_document')
-
+        #
         img_ids = []
         if img_provements:
             for i, img in enumerate(img_provements):
@@ -309,9 +309,9 @@ def provements_upload(request):
                 file_ids.append(file_instance.id)
 
         document = Documents.objects.filter(id=selectedDocument_id).first()
-
+        #
         pro = Provements.objects.create(
-            user=current_user, title=title, content=content, document=document)
+            user=current_user, title=title, content=content)
         if img_ids:
             pro.img_provements.add(*img_ids)
         if file_ids:

@@ -42,18 +42,18 @@
                         </thead>
                         <tbody>
                             {% for document in documents %}
-                                <tr class="text-secondary text-x font-weight-bolder opacity-7">    
-                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.title }}</td>
-                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.content }}</td>
-                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">{{ document.update_time|date:"Y-m-d" }}</td>
-                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden;">
+                                <tr class="text-x font-weight-bold opacity-7">    
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; color: black; font-weight: bold;">{{ document.title }}</td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; color: black; font-weight: bold;">{{ document.content }}</td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; color: black; font-weight: bold;">{{ document.update_time|date:"Y-m-d" }}</td>
+                                    <td style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden; color: black; font-weight: bold;">
                                         {% if document.file %}
-                                            <a href="{{ document.file.url }}" download>{{ document.file.name }}</a>
+                                            <a href="{{ document.file.url }}" download style="color: black; font-weight: bold;">{{ document.file.name }}</a>
                                         {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}
-                        </tbody>
+                        </tbody>                        
                     </table>
                 </div>
                 <div class="row justify-content-between py-2">
