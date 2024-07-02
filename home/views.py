@@ -461,7 +461,7 @@ def test(request):
 # 案例库展示
 
 
-@login_required
+# @login_required
 def documents(request):
     # 创建五个 Documents 实例并保存到数据库
     # documents = []
